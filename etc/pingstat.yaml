@@ -1,0 +1,43 @@
+## sample config file for pingstat
+
+interval: 5
+timeout: 5
+
+targets:
+
+  - name: Google Primary DNS
+    address: "8.8.8.8"
+
+  - name: CloudFlare Primary DNS
+    address: "1.1.1.1"
+
+
+#-------------------------------------------------------------------------------
+# setup logging system -- or remove this section to disable logging
+# this uses the standard dict config for the Python logging framework
+logging:
+  version: 1
+
+  formatters:
+    brief:
+      format: '%(message)s'
+    short:
+      format: '%(levelname)s:%(name)s:%(message)s'
+    precise:
+      format: '%(asctime)s %(levelname)-8s %(threadName)s %(name)s %(message)s'
+      datefmt: '%Y-%m-%d %H:%M:%S'
+
+  root:
+    level: INFO
+    handlers: [console]
+
+  handlers:
+    console:
+      class: logging.StreamHandler
+      formatter: brief
+      stream: ext://sys.stdout
+    logfile:
+      class : logging.FileHandler
+      formatter: precise
+      filename: wxdat.log
+      mode: w

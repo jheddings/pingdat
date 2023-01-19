@@ -1,0 +1,67 @@
+"""Application configuration data for pingstat."""
+
+import logging
+import os
+import os.path
+from typing import Dict, List, Optional
+
+import yaml
+from pydantic import BaseModel
+
+from . import PingTarget
+
+logger = logging.getLogger(__name__)
+
+
+class TargetConfig(BaseModel):
+    """Ping target configuration."""
+
+    name: str
+    address: str
+
+    interval: int = 1
+    timeout: int = 5
+
+    def initialize(self):
+        return PingTarget(
+            address=self.address, interval=self.interval, timeout=self.timeout
+        )
+
+
+class AppConfig(BaseModel):
+    """Application configuration for wxdat."""
+
+    targets: List[TargetConfig] = []
+    interval: int = 1
+    timeout: int = 5
+    logging: Optional[Dict] = None
+
+    @classmethod
+    def load(cls, config_file):
+        if not os.path.exists(config_file):
+            raise FileNotFoundError(f"config file does not exist: {config_file}")
+
+        with open(config_file, "r") as fp:
+            data = yaml.load(fp, Loader=yaml.SafeLoader)
+            conf = AppConfig(**data)
+
+        logger = cls._configure_logging(conf)
+        logger.info("loaded AppConfig from: %s", config_file)
+
+        return conf
+
+    @classmethod
+    def _configure_logging(cls, conf):
+        import logging.config
+
+        if conf.logging is None:
+            # using dictConfig() here replaces the existing configuration of all loggers
+            # this approach is more predictable than logging.basicConfig(level=logging.WARN)
+            logconf = {"version": 1, "incremental": False, "root": {"level": "WARN"}}
+
+        else:
+            logconf = conf.logging
+
+        logging.config.dictConfig(logconf)
+
+        return logging.getLogger()
