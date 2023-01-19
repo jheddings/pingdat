@@ -8,8 +8,6 @@ from typing import Dict, List, Optional
 import yaml
 from pydantic import BaseModel
 
-from . import PingTarget
-
 logger = logging.getLogger(__name__)
 
 
@@ -19,13 +17,8 @@ class TargetConfig(BaseModel):
     name: str
     address: str
 
-    interval: int = 1
-    timeout: int = 5
-
-    def initialize(self):
-        return PingTarget(
-            address=self.address, interval=self.interval, timeout=self.timeout
-        )
+    interval: Optional[int] = None
+    timeout: Optional[int] = None
 
 
 class AppConfig(BaseModel):

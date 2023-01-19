@@ -5,6 +5,7 @@ import signal
 
 import click
 
+from . import PingTarget
 from .config import AppConfig
 
 logger = logging.getLogger(__name__)
@@ -24,7 +25,11 @@ class MainApp:
         self.targets = []
 
         for target_config in config.targets:
-            target = target_config.initialize()
+            target = PingTarget(
+                address=target_config.address,
+                interval=target_config.interval or config.interval,
+                timeout=target_config.timeout or config.timeout,
+            )
             self.targets.append(target)
 
     def __call__(self):

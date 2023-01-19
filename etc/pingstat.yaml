@@ -1,6 +1,6 @@
 ## sample config file for pingstat
 
-interval: 5
+interval: 60
 timeout: 5
 
 targets:
@@ -15,6 +15,7 @@ targets:
 #-------------------------------------------------------------------------------
 # setup logging system -- or remove this section to disable logging
 # this uses the standard dict config for the Python logging framework
+
 logging:
   version: 1
 
@@ -39,5 +40,5 @@ logging:
     logfile:
       class : logging.FileHandler
       formatter: precise
-      filename: wxdat.log
+      filename: pingstat.log
       mode: w

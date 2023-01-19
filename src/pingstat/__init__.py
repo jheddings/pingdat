@@ -4,6 +4,8 @@ import logging
 import threading
 from datetime import datetime, timedelta
 
+from ping3 import ping
+
 logger = logging.getLogger(__name__)
 
 
@@ -11,13 +13,12 @@ class PingTarget:
 
     __thread_count__ = 0
 
-    def __init__(self, address, interval, timeout, name=None):
+    def __init__(self, address, interval, timeout, size=56, ttl=64):
         PingTarget.__thread_count__ += 1
 
         self.address = address
         self.interval = interval
         self.timeout = timeout
-        self.name = name
 
         self.thread_ctl = threading.Event()
         self.loop_thread = threading.Thread(name=self.id, target=self.run_loop)
@@ -86,3 +87,6 @@ class PingTarget:
         """Ping the target and update metrics."""
 
         self.logger.info("PING -- %s", self.address)
+
+        ret = ping(self.address, timeout=self.timeout)
+        self.logger.debug("==> %s", ret)
