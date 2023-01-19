@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class TargetConfig(BaseModel):
-    """Ping target configuration."""
+    """Configuration for ping targets."""
 
     name: str
     address: str
@@ -21,12 +21,21 @@ class TargetConfig(BaseModel):
     timeout: Optional[int] = None
 
 
+class MetricsConfig(BaseModel):
+    """Configuration for metrics providers."""
+
+    port: int = 9056
+
+
 class AppConfig(BaseModel):
     """Application configuration for wxdat."""
 
-    targets: List[TargetConfig] = []
     interval: int = 1
     timeout: int = 5
+
+    targets: List[TargetConfig] = []
+    metrics: MetricsConfig = MetricsConfig()
+
     logging: Optional[Dict] = None
 
     @classmethod

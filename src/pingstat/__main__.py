@@ -4,9 +4,10 @@ import logging
 import signal
 
 import click
+from prometheus_client import start_http_server
 
 from . import PingTarget
-from .config import AppConfig
+from .config import AppConfig, MetricsConfig
 
 logger = logging.getLogger(__name__)
 
@@ -20,17 +21,22 @@ class MainApp:
         self.config = config
 
         self._initialize_targets(config)
+        self._initialize_metrics(config.metrics)
 
     def _initialize_targets(self, config: AppConfig):
         self.targets = []
 
         for target_config in config.targets:
             target = PingTarget(
+                name=target_config.name,
                 address=target_config.address,
                 interval=target_config.interval or config.interval,
                 timeout=target_config.timeout or config.timeout,
             )
             self.targets.append(target)
+
+    def _initialize_metrics(self, config: MetricsConfig):
+        start_http_server(config.port)
 
     def __call__(self):
 
@@ -58,6 +64,8 @@ class MainApp:
 def main(config):
     cfg = AppConfig.load(config)
     app = MainApp(cfg)
+
+    # TODO allow simple options to be set from command line
 
     app()
 

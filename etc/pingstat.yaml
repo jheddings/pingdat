@@ -11,6 +11,11 @@ targets:
   - name: CloudFlare Primary DNS
     address: "1.1.1.1"
 
+metrics:
+
+  # the port used to expose metrics
+  port: 9056
+
 
 #-------------------------------------------------------------------------------
 # setup logging system -- or remove this section to disable logging
