@@ -1,4 +1,4 @@
-"""Module interface to pingstats."""
+"""Module interface to pingdat."""
 
 import logging
 import threading

@@ -1,4 +1,4 @@
-# Makefile for pingstats
+# Makefile for pingdat
 
 BASEDIR ?= $(PWD)
 SRCDIR ?= $(BASEDIR)/src
@@ -78,7 +78,7 @@ release: publish github-reltag
 .PHONY: run
 
 run: venv
-	$(WITH_VENV) python3 -m pingstats --config $(BASEDIR)/etc/pingstats.yaml
+	$(WITH_VENV) python3 -m pingdat --config $(BASEDIR)/etc/pingdat.yaml
 
 ################################################################################
 .PHONY: runc

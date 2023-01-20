@@ -1,6 +1,6 @@
 """Unit tests for version information."""
 
-from pingstats import version
+from pingdat import version
 
 
 def test_basic_version():

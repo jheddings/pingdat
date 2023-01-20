@@ -1,4 +1,4 @@
-"""Application configuration data for pingstats.
+"""Application configuration data for pingdat.
 
 See the default config file for details on configuration options.
 """
@@ -32,7 +32,7 @@ class MetricsConfig(BaseModel):
 
 
 class AppConfig(BaseModel):
-    """Application configuration for pingstats."""
+    """Application configuration for pingdat."""
 
     interval: int = 60
     timeout: Optional[int] = None

@@ -2,10 +2,10 @@
 version: "3"
 
 services:
-  pingstats:
-    image: jheddings/pingstats:latest
+  pingdat:
+    image: jheddings/pingdat:latest
     volumes:
-      - /opt/pingstats:/opt/pingstats
+      - /opt/pingdat:/opt/pingdat
     restart: unless-stopped
     ports:
       - "9056:9056"

@@ -1,6 +1,6 @@
-"""Verify pingstats using localhost."""
+"""Verify pingdat using localhost."""
 
-from pingstats import PingTarget
+from pingdat import PingTarget
 
 
 def test_basic_ping():

@@ -1,4 +1,4 @@
-"""Main entry point for pingstats."""
+"""Main entry point for pingdat."""
 
 import logging
 import signal
@@ -71,8 +71,8 @@ class MainApp:
 @click.option(
     "--config",
     "-f",
-    default="pingstats.yaml",
-    help="app config file (default: pingstats.yaml)",
+    default="pingdat.yaml",
+    help="app config file (default: pingdat.yaml)",
 )
 @click.version_option(
     version=version.__version__,

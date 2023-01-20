@@ -2,13 +2,13 @@
 
 import os.path
 
-from pingstats.config import AppConfig
+from pingdat.config import AppConfig
 
 BASEDIR = os.path.dirname(os.path.realpath(__file__))
 
 
 def test_sample_config():
-    filename = os.path.join(BASEDIR, "..", "etc", "pingstats.yaml")
+    filename = os.path.join(BASEDIR, "..", "etc", "pingdat.yaml")
     config = AppConfig.load(filename)
 
     assert config.interval > 0
