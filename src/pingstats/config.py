@@ -1,4 +1,7 @@
-"""Application configuration data for pingstats."""
+"""Application configuration data for pingstats.
+
+See the default config file for details on configuration options.
+"""
 
 import logging
 import os
@@ -29,7 +32,7 @@ class MetricsConfig(BaseModel):
 
 
 class AppConfig(BaseModel):
-    """Application configuration for wxdat."""
+    """Application configuration for pingstats."""
 
     interval: int = 1
     timeout: int = 5
