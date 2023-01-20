@@ -342,7 +342,8 @@
                 "value": 5
               }
             ]
-          }
+          },
+          "unit": "/sec"
         },
         "overrides": []
       },
@@ -409,7 +410,8 @@
                 "value": 5
               }
             ]
-          }
+          },
+          "unit": "/sec"
         },
         "overrides": []
       },
@@ -453,6 +455,7 @@
       "type": "stat"
     }
   ],
+  "refresh": "1m",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [],
@@ -491,6 +494,6 @@
   "timezone": "",
   "title": "Ping Statistics",
   "uid": "KYghxDT4z",
-  "version": 10,
+  "version": 12,
   "weekStart": ""
 }
