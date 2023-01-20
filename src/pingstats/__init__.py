@@ -9,40 +9,42 @@ from prometheus_client import Counter, Gauge, Histogram
 
 logger = logging.getLogger(__name__)
 
+METRICS_LABELS = ["name", "address"]
+
 TOTAL_REQUESTS_METRICS = Counter(
     "ping_total_requests",
     "Total ping requests sent",
-    labelnames=["name", "address"],
+    labelnames=METRICS_LABELS,
 )
 
 TOTAL_RESPONSES_METRICS = Counter(
     "ping_total_responses",
     "Total ping responses received",
-    labelnames=["name", "address"],
+    labelnames=METRICS_LABELS,
 )
 
 RESPONSE_ERROR_METRICS = Counter(
     "ping_response_errors",
     "Total ping errors",
-    labelnames=["name", "address"],
+    labelnames=METRICS_LABELS,
 )
 
 PING_TIMEOUT_METRICS = Counter(
     "ping_timeouts",
     "Total ping timeouts",
-    labelnames=["name", "address"],
+    labelnames=METRICS_LABELS,
 )
 
 RESPONSE_TIME_METRICS = Gauge(
     "ping_reponse_time",
     "Most recent ping delay",
-    labelnames=["name", "address"],
+    labelnames=METRICS_LABELS,
 )
 
 RESPONSE_OBSERVATIONS = Histogram(
     "ping_observations",
     "Histogram of all ping responses",
-    labelnames=["name", "address"],
+    labelnames=METRICS_LABELS,
 )
 
 
