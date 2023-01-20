@@ -77,6 +77,7 @@ class PingTarget:
         self.timeout = timeout
         self.payload_size = payload_size
         self.ttl = ttl
+        self.sequence = 0
 
         self.thread_ctl = threading.Event()
         self.loop_thread = threading.Thread(name=self.id, target=self.run_loop)
@@ -146,7 +147,7 @@ class PingTarget:
     def __call__(self):
         """Ping the target and update metrics."""
 
-        self.logger.info("PING -- %s @ %s", self.name, self.address)
+        self.logger.info("PING -- %s @ %s [%d]", self.name, self.address, self.sequence)
 
         self.metrics.requests.inc()
 
@@ -155,9 +156,11 @@ class PingTarget:
             timeout=self.timeout,
             ttl=self.ttl,
             size=self.payload_size,
+            seq=self.sequence,
         )
 
         self.logger.debug("%s ==> %s", self.name, ret)
+        self.sequence += 1
 
         if ret is None:
             self.metrics.timeouts.inc()
