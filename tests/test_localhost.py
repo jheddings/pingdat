@@ -4,9 +4,7 @@ from pingstats import PingTarget
 
 
 def test_basic_ping():
-    target = PingTarget(
-        name="ping::localhost", address="localhost", interval=0, timeout=1
-    )
+    target = PingTarget(name="ping::localhost", address="localhost", interval=0)
 
     delay = target()
 

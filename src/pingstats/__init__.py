@@ -68,13 +68,13 @@ class PingTarget:
 
     __thread_count__ = 0
 
-    def __init__(self, name, address, interval, timeout, payload_size=56, ttl=64):
+    def __init__(self, name, address, interval, timeout=None, payload_size=56, ttl=64):
         PingTarget.__thread_count__ += 1
 
         self.name = name
         self.address = address
         self.interval = interval
-        self.timeout = timeout
+        self.timeout = timeout or interval / 2
         self.payload_size = payload_size
         self.ttl = ttl
         self.sequence = 0

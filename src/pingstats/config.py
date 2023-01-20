@@ -34,8 +34,8 @@ class MetricsConfig(BaseModel):
 class AppConfig(BaseModel):
     """Application configuration for pingstats."""
 
-    interval: int = 1
-    timeout: int = 5
+    interval: int = 60
+    timeout: Optional[int] = None
 
     targets: List[TargetConfig] = []
     metrics: MetricsConfig = MetricsConfig()
