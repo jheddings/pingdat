@@ -27,16 +27,29 @@ class MainApp:
         self.targets = []
 
         for target_config in config.targets:
+            self.logger.info(
+                "Initializing ping target: %s [%s]",
+                target_config.name,
+                target_config.address,
+            )
+
             target = PingTarget(
                 name=target_config.name,
                 address=target_config.address,
                 interval=target_config.interval or config.interval,
                 timeout=target_config.timeout or config.timeout,
             )
+
             self.targets.append(target)
 
     def _initialize_metrics(self, config: MetricsConfig):
-        start_http_server(config.port)
+        self.logger.info(
+            "Starting metrics server -- %s:%s",
+            config.address,
+            config.port,
+        )
+
+        start_http_server(config.port, addr=config.address)
 
     def __call__(self):
 
