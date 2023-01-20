@@ -84,9 +84,7 @@ run: venv
 .PHONY: runc
 
 runc: build-image
-	docker container run --rm --tty --cap-add=CAP_NET_RAW \
-		--network=host --volume "$(BASEDIR):/opt/pingstats" \
-		"$(APPNAME):dev" --config=/opt/pingstats/etc/pingstats.yaml
+	docker container run --rm --tty --publish 9056:9056 "$(APPNAME):dev"
 
 ################################################################################
 .PHONY: static-checks
@@ -137,7 +135,7 @@ clean:
 .PHONY: clobber
 
 clobber: clean
-	$(WITH_VENV) pre-commit uninstall
+	$(WITH_VENV) pre-commit uninstall || true
 	rm -Rf "$(BASEDIR)/htmlcov"
 	rm -Rf "$(BASEDIR)/dist"
 	rm -Rf "$(BASEDIR)/.venv"
