@@ -98,8 +98,7 @@ static-checks: venv
 .PHONY: unit-tests
 
 unit-tests: venv
-	$(WITH_VENV) coverage run "--source=$(SRCDIR)" -m \
-		pytest "$(BASEDIR)/tests" --vcr-record=once
+	$(WITH_VENV) coverage run "--source=$(SRCDIR)" -m pytest "$(BASEDIR)/tests"
 
 ################################################################################
 .PHONY: coverage-report
@@ -121,7 +120,7 @@ coverage: coverage-report coverage-html
 ################################################################################
 .PHONY: preflight
 
-preflight: static-checks
+preflight: static-checks unit-tests coverage-report
 
 ################################################################################
 .PHONY: clean
