@@ -136,7 +136,7 @@ clean:
 .PHONY: clobber
 
 clobber: clean
-	$(WITH_VENV) pre-commit uninstall
+	$(WITH_VENV) pre-commit uninstall || true
 	rm -Rf "$(BASEDIR)/htmlcov"
 	rm -Rf "$(BASEDIR)/dist"
 	rm -Rf "$(BASEDIR)/.venv"
