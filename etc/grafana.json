@@ -559,7 +559,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": false,
+  "refresh": "1m",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [],
@@ -599,6 +599,6 @@
   "timezone": "",
   "title": "Ping Statistics",
   "uid": "KYghxDT4z",
-  "version": 24,
+  "version": 25,
   "weekStart": ""
 }
