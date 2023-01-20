@@ -12,19 +12,19 @@ logger = logging.getLogger(__name__)
 METRICS_LABELS = ["name", "address"]
 
 TOTAL_REQUESTS_METRICS = Counter(
-    "ping_total_requests",
+    "ping_requests",
     "Total ping requests sent",
     labelnames=METRICS_LABELS,
 )
 
 TOTAL_RESPONSES_METRICS = Counter(
-    "ping_total_responses",
+    "ping_responses",
     "Total ping responses received",
     labelnames=METRICS_LABELS,
 )
 
 RESPONSE_ERROR_METRICS = Counter(
-    "ping_response_errors",
+    "ping_errors",
     "Total ping errors",
     labelnames=METRICS_LABELS,
 )
