@@ -18,7 +18,7 @@ This project uses `poetry` to manage dependencies and a local virtual environmen
 get started, clone the repository and install the dependencies with the following:
 
 ```shell
-poetry pingdat
+poetry install
 ```
 
 ## Usage ##
@@ -32,7 +32,7 @@ python3 -m pingdat --config pingdat.yaml
 If you are using `poetry` to manage the virtual environment, use the following:
 
 ```shell
-poetry run python -m pingdat --config pingdat.yaml
+poetry run pingdat --config pingdat.yaml
 ```
 
 ### Docker ###
