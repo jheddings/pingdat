@@ -36,3 +36,6 @@ poetry run python -m pingstats --config pingstats.yaml
 ```
 
 ## Configuration ##
+
+For now, review the sample `pingstats.yaml` config file for a description of supported
+configuration options.
