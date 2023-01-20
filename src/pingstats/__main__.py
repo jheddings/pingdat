@@ -6,7 +6,7 @@ import signal
 import click
 from prometheus_client import start_http_server
 
-from . import PingTarget
+from . import PingTarget, version
 from .config import AppConfig, MetricsConfig
 
 logger = logging.getLogger(__name__)
@@ -27,16 +27,29 @@ class MainApp:
         self.targets = []
 
         for target_config in config.targets:
+            self.logger.info(
+                "Initializing ping target: %s [%s]",
+                target_config.name,
+                target_config.address,
+            )
+
             target = PingTarget(
                 name=target_config.name,
                 address=target_config.address,
                 interval=target_config.interval or config.interval,
                 timeout=target_config.timeout or config.timeout,
             )
+
             self.targets.append(target)
 
     def _initialize_metrics(self, config: MetricsConfig):
-        start_http_server(config.port)
+        self.logger.info(
+            "Starting metrics server -- %s:%s",
+            config.address,
+            config.port,
+        )
+
+        start_http_server(config.port, addr=config.address)
 
     def __call__(self):
 
@@ -60,6 +73,11 @@ class MainApp:
     "-f",
     default="pingstats.yaml",
     help="app config file (default: pingstats.yaml)",
+)
+@click.version_option(
+    version=version.__version__,
+    package_name=version.__pkgname__,
+    prog_name=version.__pkgname__,
 )
 def main(config):
     cfg = AppConfig.load(config)

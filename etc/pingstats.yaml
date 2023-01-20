@@ -5,15 +5,18 @@ timeout: 5
 
 targets:
 
-  - name: Google Primary DNS
-    address: "8.8.8.8"
-
   - name: CloudFlare Primary DNS
     address: "1.1.1.1"
 
+  - name: Google Primary DNS
+    address: "8.8.8.8"
+
 metrics:
 
-  # the port used to expose metrics
+  # the bind address to export metrics
+  address: "0.0.0.0"
+
+  # the port used to export metrics
   port: 9056
 
 

@@ -172,3 +172,5 @@ class PingTarget:
             self.metrics.response_time.set(ret)
             self.metrics.observations.observe(ret)
             self.metrics.responses.inc()
+
+        return ret
