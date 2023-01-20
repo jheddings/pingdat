@@ -72,7 +72,7 @@
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "graphTooltip": 0,
+  "graphTooltip": 1,
   "id": null,
   "links": [],
   "liveNow": false,
@@ -89,6 +89,7 @@
             "mode": "thresholds"
           },
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -97,8 +98,16 @@
                 "value": null
               },
               {
+                "color": "yellow",
+                "value": 0.1
+              },
+              {
+                "color": "orange",
+                "value": 0.5
+              },
+              {
                 "color": "red",
-                "value": 80
+                "value": 1
               }
             ]
           },
@@ -133,9 +142,9 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "ping_reponse_time{name=\"$target\"}",
+          "expr": "ping_reponse_time{name=~\"$target\"}",
           "interval": "",
-          "legendFormat": "{{name}}",
+          "legendFormat": "{{address}}",
           "range": true,
           "refId": "A"
         }
@@ -212,7 +221,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "sum by (le) (increase(ping_observations_bucket{name=\"$target\"}[$__rate_interval]))",
+          "expr": "sum by (le) (increase(ping_observations_bucket{name=~\"$target\"}[$__rate_interval]))",
           "format": "heatmap",
           "interval": "",
           "legendFormat": "{{le}}",
@@ -284,7 +293,7 @@
       },
       "gridPos": {
         "h": 10,
-        "w": 15,
+        "w": 16,
         "x": 0,
         "y": 8
       },
@@ -308,7 +317,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "ping_reponse_time{name=\"$target\"}",
+          "expr": "ping_reponse_time{name=~\"$target\"}",
           "interval": "",
           "legendFormat": "{{address}}",
           "range": true,
@@ -349,8 +358,8 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 9,
-        "x": 15,
+        "w": 8,
+        "x": 16,
         "y": 8
       },
       "id": 9,
@@ -376,7 +385,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "rate(ping_errors_total{name=\"$target\"}[$__rate_interval])",
+          "expr": "sum(rate(ping_errors_total{name=~\"$target\"}[$__rate_interval]))",
           "interval": "",
           "legendFormat": "{{address}}",
           "range": true,
@@ -417,8 +426,8 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 9,
-        "x": 15,
+        "w": 8,
+        "x": 16,
         "y": 13
       },
       "id": 8,
@@ -444,7 +453,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "rate(ping_errors_total{name=\"$target\"}[$__rate_interval])",
+          "expr": "sum(rate(ping_errors_total{name=~\"$target\"}[$__rate_interval]))",
           "interval": "",
           "legendFormat": "{{address}}",
           "range": true,
@@ -453,15 +462,111 @@
       ],
       "title": "Error Rate",
       "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 80,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "id": 10,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "expr": "ping_reponse_time",
+          "interval": "",
+          "legendFormat": "{{address}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "All Response Times",
+      "type": "timeseries"
     }
   ],
-  "refresh": "1m",
+  "refresh": false,
   "schemaVersion": 37,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
+        "allValue": ".*",
         "current": {},
         "datasource": {
           "type": "prometheus",
@@ -469,7 +574,7 @@
         },
         "definition": "label_values(ping_requests_total, name)",
         "hide": 0,
-        "includeAll": false,
+        "includeAll": true,
         "label": "Target",
         "multi": false,
         "name": "target",
@@ -478,10 +583,10 @@
           "query": "label_values(ping_requests_total, name)",
           "refId": "StandardVariableQuery"
         },
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 0,
+        "sort": 1,
         "type": "query"
       }
     ]
@@ -494,6 +599,6 @@
   "timezone": "",
   "title": "Ping Statistics",
   "uid": "KYghxDT4z",
-  "version": 12,
+  "version": 24,
   "weekStart": ""
 }
