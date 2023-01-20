@@ -25,6 +25,7 @@ class MetricsConfig(BaseModel):
     """Configuration for metrics providers."""
 
     port: int = 9056
+    address: str = "0.0.0.0"
 
 
 class AppConfig(BaseModel):
