@@ -1,4 +1,4 @@
-"""Main entry point for pingstat."""
+"""Main entry point for pingstats."""
 
 import logging
 import signal
@@ -58,8 +58,8 @@ class MainApp:
 @click.option(
     "--config",
     "-f",
-    default="pingstat.yaml",
-    help="app config file (default: pingstat.yaml)",
+    default="pingstats.yaml",
+    help="app config file (default: pingstats.yaml)",
 )
 def main(config):
     cfg = AppConfig.load(config)

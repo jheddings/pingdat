@@ -84,7 +84,8 @@ run: venv
 .PHONY: runc
 
 runc: build-image
-	docker container run --rm --tty --volume "$(BASEDIR):/opt/pingstats" \
+	docker container run --rm --tty --cap-add=CAP_NET_RAW \
+		--network=host --volume "$(BASEDIR):/opt/pingstats" \
 		"$(APPNAME):dev" --config=/opt/pingstats/local.yaml
 
 ################################################################################

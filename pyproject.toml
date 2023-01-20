@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "pingstat"
+name = "pingstats"
 version = "0.1.0"
 description = "Ping metrics exporter for Prometheus."
 authors = ["jheddings <jheddings@gmail.com>"]
@@ -25,7 +25,7 @@ pytest = "^7.2.0"
 coverage = "^7.0.5"
 
 [tool.poetry.scripts]
-pingstat = "pingstat.__main__:main"
+pingstats = "pingstats.__main__:main"
 
 [build-system]
 requires = ["poetry-core"]

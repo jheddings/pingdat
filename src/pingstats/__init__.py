@@ -1,4 +1,4 @@
-"""Module interface to pingstat."""
+"""Module interface to pingstats."""
 
 import logging
 import threading
@@ -47,6 +47,8 @@ RESPONSE_OBSERVATIONS = Histogram(
 
 
 class PingMetrics:
+    """Manage metrics for a specific PingTarget."""
+
     def __init__(self, **kwargs):
         """Initialize a set of labeled metrics for the given args."""
 

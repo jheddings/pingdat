@@ -1,4 +1,4 @@
-"""Consistent version information for pingstat."""
+"""Consistent version information for pingstats."""
 
 import logging
 from pathlib import Path
@@ -7,7 +7,7 @@ import pkg_resources
 
 logger = logging.getLogger(__name__)
 
-__pkgname__ = "pingstat"
+__pkgname__ = "pingstats"
 
 _pkg_dist = pkg_resources.get_distribution(__pkgname__)
 

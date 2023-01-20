@@ -1,4 +1,4 @@
-## sample config file for pingstat
+## sample config file for pingstats
 
 interval: 60
 timeout: 5
@@ -45,5 +45,5 @@ logging:
     logfile:
       class : logging.FileHandler
       formatter: precise
-      filename: pingstat.log
+      filename: pingstats.log
       mode: w

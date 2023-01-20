@@ -1,4 +1,4 @@
-"""Application configuration data for pingstat."""
+"""Application configuration data for pingstats."""
 
 import logging
 import os
