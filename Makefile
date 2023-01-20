@@ -78,7 +78,7 @@ release: publish github-reltag
 .PHONY: run
 
 run: venv
-	$(WITH_VENV) python3 -m pingstats --config $(BASEDIR)/local.yaml
+	$(WITH_VENV) python3 -m pingstats --config $(BASEDIR)/etc/pingstat.yaml
 
 ################################################################################
 .PHONY: runc
@@ -86,7 +86,7 @@ run: venv
 runc: build-image
 	docker container run --rm --tty --cap-add=CAP_NET_RAW \
 		--network=host --volume "$(BASEDIR):/opt/pingstats" \
-		"$(APPNAME):dev" --config=/opt/pingstats/local.yaml
+		"$(APPNAME):dev" --config=/opt/pingstats/etc/pingstat.yaml
 
 ################################################################################
 .PHONY: static-checks
