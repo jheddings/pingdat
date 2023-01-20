@@ -6,7 +6,7 @@ import signal
 import click
 from prometheus_client import start_http_server
 
-from . import PingTarget
+from . import PingTarget, version
 from .config import AppConfig, MetricsConfig
 
 logger = logging.getLogger(__name__)
@@ -73,6 +73,11 @@ class MainApp:
     "-f",
     default="pingstats.yaml",
     help="app config file (default: pingstats.yaml)",
+)
+@click.version_option(
+    version=version.__version__,
+    package_name=version.__pkgname__,
+    prog_name=version.__pkgname__,
 )
 def main(config):
     cfg = AppConfig.load(config)
