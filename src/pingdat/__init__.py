@@ -80,7 +80,7 @@ class PingTarget:
         self.sequence = 0
 
         self.thread_ctl = threading.Event()
-        self.loop_thread = threading.Thread(name=self.id, target=self.run_loop)
+        self.loop_thread = threading.Thread(name=self.id, target=self.ping_loop)
         self.loop_last_exec = None
 
         self.metrics = PingMetrics(name=name, address=address)
@@ -110,11 +110,11 @@ class PingTarget:
         if self.loop_thread.is_alive():
             self.logger.warning("Thread failed to complete")
 
-    def run_loop(self):
+    def ping_loop(self):
         """Manage the lifecycle of the thread loop."""
 
         self.logger.debug(
-            "BEGIN -- %s :: run_loop @ %f sec", self.address, self.interval
+            "BEGIN -- %s :: ping_loop @ %f sec", self.address, self.interval
         )
 
         while not self.thread_ctl.is_set():
@@ -128,11 +128,11 @@ class PingTarget:
             next_loop_sleep = (next_loop_time - datetime.now()).total_seconds()
 
             if next_loop_sleep <= 0:
-                self.logger.warning("loop time exceeded interval; overflow")
+                self.logger.warning("ping time exceeded loop interval; overflow")
                 next_loop_sleep = 0
 
             self.logger.debug(
-                "%s :: run_loop complete; %f sec elapsed (next_step: %f)",
+                "%s :: ping loop complete; %f sec elapsed (next_step: %f)",
                 self.address,
                 elapsed,
                 next_loop_sleep,
@@ -140,9 +140,9 @@ class PingTarget:
 
             # break if we are signaled to stop
             if self.thread_ctl.wait(next_loop_sleep):
-                self.logger.debug("received exit signal; run_loop exiting")
+                self.logger.debug("received exit signal; ping_loop exiting")
 
-        self.logger.debug("END -- %s :: run_loop", self.address)
+        self.logger.debug("END -- %s :: ping_loop", self.address)
 
     def __call__(self):
         """Ping the target and update metrics."""
@@ -170,7 +170,7 @@ class PingTarget:
 
         else:
             self.metrics.response_time.set(ret)
-            self.metrics.observations.observe(ret)
             self.metrics.responses.inc()
+            self.metrics.observations.observe(ret)
 
         return ret

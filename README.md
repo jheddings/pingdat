@@ -21,6 +21,10 @@ get started, clone the repository and install the dependencies with the followin
 poetry install
 ```
 
+### Grafana Dashboard ###
+
+A Grafana dashboard is available as #(17922)[https://grafana.com/grafana/dashboards/17922].
+
 ## Usage ##
 
 Run the module and tell it which config file to use.
