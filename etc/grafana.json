@@ -70,11 +70,25 @@
       }
     ]
   },
+  "description": "Data visualization for https://github.com/jheddings/pingdat",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "links": [],
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": true,
+      "title": "pingdat",
+      "tooltip": "",
+      "type": "link",
+      "url": "https://github.com/jheddings/pingdat"
+    }
+  ],
   "liveNow": false,
   "panels": [
     {
@@ -117,7 +131,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 7,
+        "w": 8,
         "x": 0,
         "y": 0
       },
@@ -174,8 +188,8 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 17,
-        "x": 7,
+        "w": 16,
+        "x": 8,
         "y": 0
       },
       "id": 4,
@@ -555,14 +569,17 @@
           "refId": "A"
         }
       ],
-      "title": "All Response Times",
+      "title": "Combined Response Times",
       "type": "timeseries"
     }
   ],
   "refresh": "1m",
   "schemaVersion": 37,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "network",
+    "performance"
+  ],
   "templating": {
     "list": [
       {
@@ -599,6 +616,6 @@
   "timezone": "",
   "title": "Ping Statistics",
   "uid": "KYghxDT4z",
-  "version": 25,
+  "version": 30,
   "weekStart": ""
 }
