@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "pingdat"
-version = "0.1.0"
-description = "Ping metrics exporter for Prometheus."
+version = "1.0.0"
+description = "A simple ping exporter for Prometheus metrics."
 authors = ["jheddings <jheddings@gmail.com>"]
 license = "MIT"
 readme = "README.md"
