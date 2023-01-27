@@ -73,11 +73,12 @@ class PingTarget:
 
         self.name = name
         self.address = address
-        self.interval = interval
         self.timeout = timeout or interval / 2
         self.payload_size = payload_size
         self.ttl = ttl
         self.sequence = 0
+
+        self.interval = timedelta(seconds=interval)
 
         self.thread_ctl = threading.Event()
         self.loop_thread = threading.Thread(name=self.id, target=self.ping_loop)
@@ -113,9 +114,7 @@ class PingTarget:
     def ping_loop(self):
         """Manage the lifecycle of the thread loop."""
 
-        self.logger.debug(
-            "BEGIN -- %s :: ping_loop @ %f sec", self.address, self.interval
-        )
+        self.logger.debug("BEGIN -- %s :: ping_loop @ %s", self.address, self.interval)
 
         while not self.thread_ctl.is_set():
             self.loop_last_exec = datetime.now()
@@ -123,18 +122,17 @@ class PingTarget:
             self()
 
             # figure out when to run the next step
-            elapsed = (datetime.now() - self.loop_last_exec).total_seconds()
-            next_loop_time = self.loop_last_exec + timedelta(seconds=self.interval)
+            next_loop_time = self.loop_last_exec + self.interval
             next_loop_sleep = (next_loop_time - datetime.now()).total_seconds()
 
+            # watch for overflows (pings that take longer than the thread interval)
             if next_loop_sleep <= 0:
                 self.logger.warning("ping time exceeded loop interval; overflow")
                 next_loop_sleep = 0
 
             self.logger.debug(
-                "%s :: ping loop complete; %f sec elapsed (next_step: %f)",
+                "%s :: ping loop complete; next_step: %f",
                 self.address,
-                elapsed,
                 next_loop_sleep,
             )
 
