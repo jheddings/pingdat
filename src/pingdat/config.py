@@ -4,6 +4,7 @@ See the default config file for details on configuration options.
 """
 
 import logging
+import logging.config
 import os
 import os.path
 from typing import Dict, List, Optional
@@ -58,16 +59,9 @@ class AppConfig(BaseModel):
 
     @classmethod
     def _configure_logging(cls, conf):
-        import logging.config
-
         if conf.logging is None:
-            # using dictConfig() here replaces the existing configuration of all loggers
-            # this approach is more predictable than logging.basicConfig(level=logging.WARN)
-            logconf = {"version": 1, "incremental": False, "root": {"level": "WARN"}}
-
+            logging.basicConfig(level=logging.WARNING)
         else:
-            logconf = conf.logging
-
-        logging.config.dictConfig(logconf)
+            logging.config.dictConfig(conf.logging)
 
         return logging.getLogger()
