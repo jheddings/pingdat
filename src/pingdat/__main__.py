@@ -52,7 +52,6 @@ class MainApp:
         start_http_server(config.port, addr=config.address)
 
     def __call__(self):
-
         self.logger.debug("Starting main app")
 
         for obs in self.targets:

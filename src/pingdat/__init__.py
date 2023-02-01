@@ -65,7 +65,6 @@ class PingMetrics:
 
 
 class PingTarget:
-
     __thread_count__ = 0
 
     def __init__(self, name, address, interval, timeout=None, payload_size=56, ttl=64):
