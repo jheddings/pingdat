@@ -1,5 +1,5 @@
 ## sample config file for pingdat
-
+---
 # the update interval for ping statistics in seconds (defaults to 60 sec)
 #
 # this value may be overridden in each target
@@ -31,7 +31,7 @@ metrics:
   port: 9056
 
 
-#-------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # setup logging system -- or remove this section to disable logging
 # this uses the standard dict config for the Python logging framework
 
@@ -57,7 +57,7 @@ logging:
       formatter: brief
       stream: ext://sys.stdout
     logfile:
-      class : logging.FileHandler
+      class: logging.FileHandler
       formatter: precise
       filename: pingdat.log
       mode: w
