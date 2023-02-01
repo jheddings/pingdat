@@ -1,9 +1,10 @@
+---
 repos:
   - repo: https://github.com/pycqa/isort
     rev: "5.12.0"
     hooks:
       - id: isort
-        args: [ --profile, black ]
+        args: [--profile, black]
 
   - repo: https://github.com/psf/black
     rev: "23.1.0"
@@ -21,7 +22,14 @@ repos:
           - flake8-comprehensions
           - flake8-logging-format
 
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: "v1.29.0"
+    hooks:
+      - id: yamllint
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
+      - id: check-case-conflict
+      - id: check-merge-conflict
       - id: trailing-whitespace
