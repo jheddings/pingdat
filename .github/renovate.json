@@ -2,21 +2,21 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "enabled": true,
 
-  "assignees": [ "jheddings" ],
-  "labels": [ "dependencies", "renovate" ],
+  "assignees": ["jheddings"],
+  "labels": ["dependencies", "renovate"],
 
   "python": {
-    "addLabels": [ "python" ],
+    "addLabels": ["python"],
     "enabled": true
   },
 
   "docker": {
-    "addLabels": [ "docker" ],
+    "addLabels": ["docker"],
     "enabled": true
   },
 
   "pre-commit": {
-    "addLabels": [ "pre-commit" ],
+    "addLabels": ["pre-commit"],
     "enabled": true
   },
 
@@ -39,5 +39,5 @@
   "timezone": "America/Denver",
   "schedule": ["at any time"],
 
-  "extends": [ "config:base" ]
+  "extends": ["config:base"]
 }
