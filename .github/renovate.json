@@ -15,36 +15,23 @@
     "enabled": true
   },
 
-  "golang": {
-    "addLabels": [ "golang" ],
-    "enabled": true
-  },
-
-  "rust": {
-    "addLabels": [ "rust" ],
-    "enabled": true
-  },
-
-  "java": {
-    "addLabels": [ "java" ],
-    "enabled": true
-  },
-
-  "js": {
-    "addLabels": [ "js" ],
-    "enabled": true
-  },
-
-  "node": {
-    "addLabels": [ "node" ],
-    "enabled": true
-  },
-
   "pre-commit": {
     "addLabels": [ "pre-commit" ],
     "enabled": true
   },
 
+  "lockFileMaintenance": {
+    "enabled": true,
+    "automerge": true
+  },
+
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["patch"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
+    }
+  ],
 
   "automergeType": "pr",
   "dependencyDashboard": false,
