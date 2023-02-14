@@ -20,7 +20,7 @@ black = "^23.0.0"
 isort = "^5.12.0"
 flake8 = "^6.0.0"
 pre-commit = "^3.0.4"
-git-python = "^1.0.3"
+git-python = "^1.1.1"
 pytest = "^7.2.1"
 coverage = "^7.1.0"
 
