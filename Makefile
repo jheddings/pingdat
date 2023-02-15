@@ -17,14 +17,18 @@ all: venv preflight build
 .PHONY: venv
 
 venv:
-	poetry install --sync
+	poetry install --sync --no-interaction
 	$(WITH_VENV) pre-commit install --install-hooks --overwrite
+
+################################################################################
+poetry.lock: venv
+	poetry lock --no-update --no-interaction
 
 ################################################################################
 .PHONY: build-dist
 
 build-dist: preflight
-	poetry --no-interaction build
+	poetry build --no-interaction
 
 ################################################################################
 .PHONY: build-image
@@ -137,6 +141,6 @@ clobber: clean
 	$(WITH_VENV) pre-commit uninstall || true
 	rm -Rf "$(BASEDIR)/htmlcov"
 	rm -Rf "$(BASEDIR)/dist"
-	poetry env remove --all
+	poetry env remove --all --no-interaction
 	docker image rm "$(APPNAME):latest" 2>/dev/null || true
 	docker image rm "$(APPNAME):$(APPVER)" 2>/dev/null || true
