@@ -137,6 +137,6 @@ clobber: clean
 	$(WITH_VENV) pre-commit uninstall || true
 	rm -Rf "$(BASEDIR)/htmlcov"
 	rm -Rf "$(BASEDIR)/dist"
-	rm -Rf "$(BASEDIR)/.venv"
+	poetry env remove --all
 	docker image rm "$(APPNAME):latest" 2>/dev/null || true
 	docker image rm "$(APPNAME):$(APPVER)" 2>/dev/null || true
