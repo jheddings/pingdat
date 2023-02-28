@@ -16,7 +16,7 @@ pyyaml = "^6.0"
 ping3 = "^4.0.4"
 
 [tool.poetry.group.dev.dependencies]
-pre-commit = "^3.1.0"
+pre-commit = "^3.1.1"
 GitPython = "^3.1.31"
 pytest = "^7.2.1"
 coverage = "^7.2.1"
