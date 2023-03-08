@@ -1,13 +1,9 @@
 FROM python:3.11
 
-RUN mkdir -p /opt/pingdat
-
 COPY src poetry.lock pyproject.toml README.md /tmp/pingdat/
 RUN pip3 install /tmp/pingdat/ && rm -Rf /tmp/pingdat
 
-COPY etc/pingdat.yaml /opt/pingdat/
-
-WORKDIR "/opt/pingdat"
+COPY etc/pingdat.yaml /etc/pingdat.yaml
 
 USER root
 EXPOSE 9056
@@ -17,4 +13,4 @@ EXPOSE 9056
 ENTRYPOINT ["python3", "-m", "pingdat"]
 
 # allow local callers to change the config file
-CMD ["--config=/opt/pingdat/pingdat.yaml"]
+CMD ["--config=/etc/pingdat.yaml"]
