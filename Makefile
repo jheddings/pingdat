@@ -8,125 +8,105 @@ APPVER ?= $(shell grep -m1 '^version' "$(BASEDIR)/pyproject.toml" | sed -e 's/ve
 
 WITH_VENV := poetry run
 
-################################################################################
-.PHONY: all
 
+.PHONY: all
 all: venv preflight build
 
-################################################################################
-.PHONY: venv
 
+.PHONY: venv
 venv:
 	poetry install --sync --no-interaction
 	$(WITH_VENV) pre-commit install --install-hooks --overwrite
 
-################################################################################
+
 poetry.lock: venv
 	poetry lock --no-update --no-interaction
 
-################################################################################
-.PHONY: build-dist
 
+.PHONY: build-dist
 build-dist: preflight
 	poetry build --no-interaction
 
-################################################################################
-.PHONY: build-image
 
+.PHONY: build-image
 build-image: preflight
 	docker image build --tag "$(APPNAME):dev" "$(BASEDIR)"
 
-################################################################################
-.PHONY: build
 
+.PHONY: build
 build: build-dist build-image
 
-################################################################################
-.PHONY: github-reltag
 
+.PHONY: github-reltag
 github-reltag: preflight
 	git tag "v$(APPVER)" main
 	git push origin "v$(APPVER)"
 
-################################################################################
-.PHONY: image-reltag
 
+.PHONY: image-reltag
 image-reltag: preflight build-image
 	docker image tag "$(APPNAME):dev" "jheddings/$(APPNAME):latest"
 	docker image tag "jheddings/$(APPNAME):latest" "jheddings/$(APPNAME):$(APPVER)"
 
-################################################################################
-.PHONY: publish-pypi
 
+.PHONY: publish-pypi
 publish-pypi: preflight build-dist
 	poetry publish --no-interaction
 
-################################################################################
-.PHONY: publish-docker
 
+.PHONY: publish-docker
 publish-docker: preflight image-reltag
 	docker push "jheddings/$(APPNAME):$(APPVER)"
 	docker push "jheddings/$(APPNAME):latest"
 
-################################################################################
-.PHONY: publish
 
+.PHONY: publish
 publish: publish-pypi publish-docker
 
-################################################################################
-.PHONY: release
 
+.PHONY: release
 release: publish github-reltag
 
-################################################################################
-.PHONY: run
 
+.PHONY: run
 run: venv
 	$(WITH_VENV) python3 -m pingdat --config $(BASEDIR)/etc/pingdat.yaml
 
-################################################################################
-.PHONY: runc
 
+.PHONY: runc
 runc: build-image
 	docker container run --rm --tty --publish 9056:9056 "$(APPNAME):dev"
 
-################################################################################
-.PHONY: static-checks
 
+.PHONY: static-checks
 static-checks: venv
 	$(WITH_VENV) pre-commit run --all-files --verbose
 
-################################################################################
-.PHONY: unit-tests
 
+.PHONY: unit-tests
 unit-tests: venv
 	$(WITH_VENV) coverage run "--source=$(SRCDIR)" -m pytest "$(BASEDIR)/tests"
 
-################################################################################
-.PHONY: coverage-report
 
+.PHONY: coverage-report
 coverage-report: venv unit-tests
 	$(WITH_VENV) coverage report
 
-################################################################################
-.PHONY: coverage-html
 
+.PHONY: coverage-html
 coverage-html: venv unit-tests
 	$(WITH_VENV) coverage html
 
-################################################################################
-.PHONY: coverage
 
+.PHONY: coverage
 coverage: coverage-report coverage-html
 
-################################################################################
-.PHONY: preflight
 
+.PHONY: preflight
 preflight: static-checks unit-tests coverage-report
 
-################################################################################
-.PHONY: clean
 
+.PHONY: clean
 clean:
 	rm -f "$(BASEDIR)/.coverage"
 	rm -Rf "$(BASEDIR)/.pytest_cache"
@@ -134,9 +114,8 @@ clean:
 	find "$(BASEDIR)" -name '__pycache__' -print | xargs rm -Rf
 	docker image rm "$(APPNAME):dev" 2>/dev/null || true
 
-################################################################################
-.PHONY: clobber
 
+.PHONY: clobber
 clobber: clean
 	$(WITH_VENV) pre-commit uninstall || true
 	rm -Rf "$(BASEDIR)/htmlcov"

@@ -160,9 +160,11 @@ class PingTarget:
         self.sequence += 1
 
         if ret is None:
+            self.metrics.response_time.set(self.timeout)
             self.metrics.timeouts.inc()
 
         elif ret is False:
+            self.metrics.response_time.set(-1)
             self.metrics.errors.inc()
 
         else:
