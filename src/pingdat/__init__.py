@@ -99,6 +99,8 @@ class PingTarget:
     def __call__(self, seq=0):
         """Ping the configured target with a given sequence number."""
 
+        self.logger.debug("ping :: %s @ %s [seq:%d]", self.name, self.address, seq)
+
         return ping(
             self.address,
             timeout=self.timeout,
@@ -168,9 +170,8 @@ class PingTarget:
         response_times = []
 
         for seq in range(0, self.count):
-            self.logger.debug("     -- %s @ %s [seq:%d]", self.name, self.address, seq)
-
             self.metrics.requests.inc()
+
             resp = self(seq)
 
             if resp is None:
