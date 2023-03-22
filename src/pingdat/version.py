@@ -8,10 +8,12 @@ logger = logging.getLogger(__name__)
 
 
 def package_version(pkgname):
+    """Determine the version of an installed package."""
     return importlib.metadata.version(pkgname)
 
 
 def extended_version(pkgname):
+    """Calculate extended version information for the named package."""
     version = package_version(pkgname)
 
     # if we are running in a local copy, append the repo information
@@ -42,11 +44,13 @@ def extended_version(pkgname):
                 version += "+"
 
         except git.InvalidGitRepositoryError:
-            pass
+            logger.debug("repository information not available")
 
-    # if python-git is not installed...
+        except Exception:
+            logger.debug("error processing repository")
+
     except ModuleNotFoundError:
-        logger.debug("repository information not available")
+        logger.debug("unable to load git repository")
 
     return version
 

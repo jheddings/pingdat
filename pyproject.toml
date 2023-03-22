@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pingdat"
-version = "1.1.2"
+version = "1.1.4"
 description = "A simple ping exporter for Prometheus metrics."
 authors = ["jheddings <jheddings@gmail.com>"]
 license = "MIT"
@@ -16,7 +16,7 @@ pyyaml = "^6.0"
 ping3 = "^4.0.4"
 
 [tool.poetry.group.dev.dependencies]
-pre-commit = "^3.1.1"
+pre-commit = "^3.2.0"
 GitPython = "^3.1.31"
 pytest = "^7.2.2"
 coverage = "^7.2.2"
