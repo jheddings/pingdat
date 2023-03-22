@@ -38,6 +38,7 @@ class MainApp:
                 address=target_config.address,
                 interval=target_config.interval or config.interval,
                 timeout=target_config.timeout or config.timeout,
+                count=target_config.count or config.count,
             )
 
             self.targets.append(target)
