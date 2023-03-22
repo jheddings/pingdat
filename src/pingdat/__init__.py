@@ -72,10 +72,10 @@ class PingTarget:
         name,
         address,
         interval,
-        timeout=None,
-        payload_size=56,
         ttl=64,
         count=3,
+        timeout=None,
+        payload_size=56,
     ):
         PingTarget.__thread_count__ += 1
 
