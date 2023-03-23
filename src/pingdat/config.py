@@ -23,6 +23,7 @@ class TargetConfig(BaseModel):
 
     interval: Optional[int] = None
     timeout: Optional[int] = None
+    count: Optional[int] = None
 
 
 class MetricsConfig(BaseModel):
@@ -36,6 +37,7 @@ class AppConfig(BaseModel):
     """Application configuration for pingdat."""
 
     interval: int = 60
+    count: int = 3
     timeout: Optional[int] = None
 
     targets: List[TargetConfig] = []

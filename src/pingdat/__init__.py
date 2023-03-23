@@ -67,7 +67,16 @@ class PingMetrics:
 class PingTarget:
     __thread_count__ = 0
 
-    def __init__(self, name, address, interval, timeout=None, payload_size=56, ttl=64):
+    def __init__(
+        self,
+        name,
+        address,
+        interval,
+        ttl=64,
+        count=3,
+        timeout=None,
+        payload_size=56,
+    ):
         PingTarget.__thread_count__ += 1
 
         self.name = name
@@ -75,7 +84,7 @@ class PingTarget:
         self.timeout = timeout or interval / 2
         self.payload_size = payload_size
         self.ttl = ttl
-        self.sequence = 0
+        self.count = count
 
         self.interval = timedelta(seconds=interval)
 
@@ -86,6 +95,19 @@ class PingTarget:
         self.metrics = PingMetrics(name=name, address=address)
 
         self.logger = logger.getChild("PingTarget")
+
+    def __call__(self, seq=0):
+        """Ping the configured target with a given sequence number."""
+
+        self.logger.debug("ping :: %s @ %s [seq:%d]", self.name, self.address, seq)
+
+        return ping(
+            self.address,
+            timeout=self.timeout,
+            ttl=self.ttl,
+            size=self.payload_size,
+            seq=seq,
+        )
 
     @property
     def id(self) -> str:
@@ -118,7 +140,7 @@ class PingTarget:
         while not self.thread_ctl.is_set():
             self.loop_last_exec = datetime.now()
 
-            self()
+            self.run_ping_test()
 
             # figure out when to run the next step
             next_loop_time = self.loop_last_exec + self.interval
@@ -141,35 +163,32 @@ class PingTarget:
 
         self.logger.debug("END -- %s :: ping_loop", self.address)
 
-    def __call__(self):
+    def run_ping_test(self):
         """Ping the target and update metrics."""
+        self.logger.info("PING -- %s @ %s", self.name, self.address)
 
-        self.logger.info("PING -- %s @ %s [%d]", self.name, self.address, self.sequence)
+        response_times = []
 
-        self.metrics.requests.inc()
+        for seq in range(0, self.count):
+            self.metrics.requests.inc()
 
-        ret = ping(
-            self.address,
-            timeout=self.timeout,
-            ttl=self.ttl,
-            size=self.payload_size,
-            seq=self.sequence,
-        )
+            resp = self(seq)
 
-        self.logger.debug("%s ==> %s", self.name, ret)
-        self.sequence += 1
+            if resp is None:
+                self.metrics.timeouts.inc()
+                response_times.append(self.timeout)
 
-        if ret is None:
-            self.metrics.response_time.set(self.timeout)
-            self.metrics.timeouts.inc()
+            elif resp is False:
+                self.metrics.errors.inc()
 
-        elif ret is False:
-            self.metrics.response_time.set(-1)
-            self.metrics.errors.inc()
+            else:
+                self.metrics.responses.inc()
+                self.metrics.observations.observe(resp)
+                response_times.append(resp)
+
+        if len(response_times) > 0:
+            avg = sum(response_times) / len(response_times)
+            self.metrics.response_time.set(avg)
 
         else:
-            self.metrics.response_time.set(ret)
-            self.metrics.responses.inc()
-            self.metrics.observations.observe(ret)
-
-        return ret
+            self.metrics.response_time.set(-1)

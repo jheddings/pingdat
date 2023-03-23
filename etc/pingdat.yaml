@@ -11,6 +11,12 @@ interval: 60
 # this value may be overridden in each target
 timeout: 5
 
+# the number of ping attempts per iteration.  the result will be an average
+# of the times, errors will be dropped
+#
+# this value may be overridden in each target
+count: 3
+
 # a list of targets that will be monitored by this service (defaults to an
 # empty list)
 targets:
