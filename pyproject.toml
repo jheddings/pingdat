@@ -19,7 +19,7 @@ ping3 = "^4.0.4"
 pre-commit = "^3.2.2"
 GitPython = "^3.1.31"
 pytest = "^7.3.1"
-coverage = "^7.2.3"
+coverage = "^7.2.4"
 
 [tool.poetry.scripts]
 pingdat = "pingdat.__main__:main"
