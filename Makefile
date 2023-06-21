@@ -7,6 +7,7 @@ APPNAME ?= $(shell grep -m1 '^name' "$(BASEDIR)/pyproject.toml" | sed -e 's/name
 APPVER ?= $(shell grep -m1 '^version' "$(BASEDIR)/pyproject.toml" | sed -e 's/version.*"\(.*\)"/\1/')
 
 WITH_VENV := poetry run
+PLATFORMS ?= linux/amd64,linux/arm64,linux/arm/v7
 
 
 .PHONY: all
@@ -23,30 +24,23 @@ poetry.lock: venv
 	poetry lock --no-update --no-interaction
 
 
+.PHONY: buildx
+buildx:
+	docker buildx create --use --name $(APPNAME)-buildx
+
+
 .PHONY: build-dist
 build-dist: preflight
 	poetry build --no-interaction
 
 
 .PHONY: build-image
-build-image: preflight
+build-image: preflight buildx
 	docker image build --tag "$(APPNAME):dev" "$(BASEDIR)"
 
 
 .PHONY: build
 build: build-dist build-image
-
-
-.PHONY: github-reltag
-github-reltag: preflight
-	git tag "v$(APPVER)" main
-	git push origin "v$(APPVER)"
-
-
-.PHONY: image-reltag
-image-reltag: preflight build-image
-	docker image tag "$(APPNAME):dev" "jheddings/$(APPNAME):latest"
-	docker image tag "jheddings/$(APPNAME):latest" "jheddings/$(APPNAME):$(APPVER)"
 
 
 .PHONY: publish-pypi
@@ -55,9 +49,10 @@ publish-pypi: preflight build-dist
 
 
 .PHONY: publish-docker
-publish-docker: preflight image-reltag
-	docker push "jheddings/$(APPNAME):$(APPVER)"
-	docker push "jheddings/$(APPNAME):latest"
+publish-docker: preflight buildx
+	docker buildx build --push --platform $(PLATFORMS) \
+		--tag "$(APPNAME):$(APPVER)" --tag "$(APPNAME):latest" \
+		"$(BASEDIR)"
 
 
 .PHONY: publish
@@ -65,7 +60,9 @@ publish: publish-pypi publish-docker
 
 
 .PHONY: release
-release: publish github-reltag
+release: publish
+	git tag "v$(APPVER)" main
+	git push origin "v$(APPVER)"
 
 
 .PHONY: run
