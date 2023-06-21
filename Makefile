@@ -7,7 +7,6 @@ APPNAME ?= $(shell grep -m1 '^name' "$(BASEDIR)/pyproject.toml" | sed -e 's/name
 APPVER ?= $(shell grep -m1 '^version' "$(BASEDIR)/pyproject.toml" | sed -e 's/version.*"\(.*\)"/\1/')
 
 WITH_VENV := poetry run
-PLATFORMS ?= linux/amd64,linux/arm64,linux/arm/v7
 
 
 .PHONY: all
@@ -35,7 +34,7 @@ build-dist: preflight
 
 
 .PHONY: build-image
-build-image: preflight buildx
+build-image: preflight
 	docker image build --tag "$(APPNAME):dev" "$(BASEDIR)"
 
 
@@ -49,9 +48,11 @@ publish-pypi: preflight build-dist
 
 
 .PHONY: publish-docker
-publish-docker: preflight buildx
-	docker buildx build --push --platform $(PLATFORMS) \
-		--tag "$(APPNAME):$(APPVER)" --tag "$(APPNAME):latest" \
+publish-docker: preflight
+	docker buildx build --push \
+		--platform linux/amd64,linux/arm64 \
+		--tag "jheddings/$(APPNAME):$(APPVER)" \
+		--tag "jheddings/$(APPNAME):latest" \
 		"$(BASEDIR)"
 
 
