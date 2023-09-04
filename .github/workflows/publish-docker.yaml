@@ -1,29 +1,14 @@
-# publish all packages when a version tag is pushed to main
-#
-# TODO fail if the project version does not match the tag
+# publish images to Docker Hub when a new tag is pushed to main
 ---
-name: Publish latest packages
+name: Publish Docker images
 
 "on":
   push:
     tags: ["v*.*.*"]
 
 jobs:
-  pypi-publish:
-    name: Publish release to PyPI
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Upload package to PyPI
-        uses: JRubics/poetry-publish@v1.17
-        with:
-          pypi_token: ${{ secrets.PYPI_TOKEN }}
-          ignore_dev_requirements: true
-
   docker-publish:
-    name: Publish release to Docker Hub
+    name: Publish image to Docker Hub
     runs-on: ubuntu-latest
 
     steps:
