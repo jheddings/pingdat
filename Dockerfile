@@ -1,4 +1,4 @@
-FROM python:3.11
+FROM python:3.12
 
 COPY src poetry.lock pyproject.toml README.md /tmp/pingdat/
 RUN pip3 install /tmp/pingdat/ && rm -Rf /tmp/pingdat
