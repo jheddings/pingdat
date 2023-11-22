@@ -38,7 +38,7 @@ build: build-dist build-image
 
 
 .PHONY: release
-release:
+release: preflight
 	git tag "v$(APPVER)" main
 	git push origin "v$(APPVER)"
 
