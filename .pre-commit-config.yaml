@@ -16,4 +16,5 @@ repos:
     hooks:
       - id: check-case-conflict
       - id: check-merge-conflict
+      - id: check-toml
       - id: trailing-whitespace
