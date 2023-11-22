@@ -50,7 +50,7 @@ class AppConfig(BaseModel):
         if not os.path.exists(config_file):
             raise FileNotFoundError(f"config file does not exist: {config_file}")
 
-        with open(config_file, "r") as fp:
+        with open(config_file) as fp:
             data = yaml.load(fp, Loader=yaml.SafeLoader)
             conf = AppConfig(**data)
 
