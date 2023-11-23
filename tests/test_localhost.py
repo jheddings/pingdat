@@ -7,7 +7,7 @@ import pytest
 from pingdat import PingTarget
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def localhost():
     """Create a PingTarget for localhost."""
 
@@ -34,8 +34,14 @@ def test_basic_ping(localhost: PingTarget):
 def test_ping_thread(localhost: PingTarget):
     """Verify that the ping thread is running."""
 
+    # this is kind of a hack to get number of requests, but it works
+    starting_count = localhost.metrics.requests._value.get()
+
     # one ping only, please
     sleep(0.25)
 
-    # this is kind of a hack to get number of requests, but it works
-    assert localhost.metrics.requests._value.get() == localhost.count
+    final_count = localhost.metrics.requests._value.get()
+
+    # since the metrics may be altered by other tests,
+    # we need to compare the starting and ending counts
+    assert final_count > starting_count
