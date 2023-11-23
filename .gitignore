@@ -8,7 +8,9 @@ __pycache__
 *.py[cod]
 *.prof
 .coverage
+
 .pytest_cache
+.ruff_cache
 
 .venv
 
