@@ -20,7 +20,7 @@ pre-commit = "^3.6.0"
 GitPython = "^3.1.40"
 pytest = "^7.4.3"
 coverage = "^7.3.2"
-ruff = "^0.1.7"
+ruff = "^0.1.8"
 
 [tool.poetry.scripts]
 pingdat = "pingdat.__main__:main"
