@@ -13,7 +13,7 @@ click = "^8.1.7"
 prometheus-client = "^0.20.0"
 pydantic = "^2.6.3"
 pyyaml = "^6.0.1"
-ping3 = "^4.0.4"
+ping3 = "^4.0.5"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.6.2"
