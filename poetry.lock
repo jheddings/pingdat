@@ -357,13 +357,13 @@ files = [
 
 [[package]]
 name = "ping3"
-version = "4.0.6"
+version = "4.0.7"
 description = "A pure python3 version of ICMP ping implementation using raw socket."
 optional = false
 python-versions = ">=3.5"
 files = [
-    {file = "ping3-4.0.6-py3-none-any.whl", hash = "sha256:fc5146dd1b5800b3feb06d497b7d7b91ef52d724b1bb295705067bcee368b0c3"},
-    {file = "ping3-4.0.6.tar.gz", hash = "sha256:52634c3277f3435d3d84f7ee813e532d3ad3a1c6dcab16713cadc51c184a27ca"},
+    {file = "ping3-4.0.7-py3-none-any.whl", hash = "sha256:b85638a0894da8c227baf52fb4988843854978c58b4dc99b1b4364ee908913a2"},
+    {file = "ping3-4.0.7.tar.gz", hash = "sha256:b8ed8e6c266f8b37464aba1b6a00ba183875d7acf9ab9c881fd3fc3dcbe90a2f"},
 ]
 
 [package.extras]
@@ -758,4 +758,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "f529d4c998c348cd1857b3776a9b2c5b5dc121667d626b76073e4373c7b74c36"
+content-hash = "a183557d8d89ccbfa5919b4939ec8a037a2e6d9fa31327ef97a12f31f0043833"
