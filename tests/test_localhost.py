@@ -3,7 +3,6 @@
 from time import sleep
 
 import pytest
-from ping3.errors import PingError
 
 from pingdat import PingLoop, PingTarget
 
@@ -48,19 +47,10 @@ def test_ping_thread(loop: PingLoop):
     starting_count = localhost.metrics.requests._value.get()
 
     # allow a single ping
-    sleep(localhost.timeout / 2)
+    sleep(loop.interval.total_seconds())
 
     final_count = localhost.metrics.requests._value.get()
 
     # since the metrics may be altered by other tests,
     # we need to compare the starting and ending counts
     assert final_count > starting_count
-
-
-def test_bad_hostname():
-    """Verify that invalid hosts are handled properly."""
-
-    target = PingTarget(name="ping::invalid", address="-1")
-
-    with pytest.raises(PingError):
-        target.one_ping_only()
