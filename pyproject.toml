@@ -29,9 +29,11 @@ pingdat = "pingdat.__main__:main"
 [tool.black]
 line_length = 88
 
+[tool.isort]
+profile = "black"
+
 [tool.ruff.lint]
 select = [
-    "I",   # isort
     "E",   # pycodestyle errors
     "W",   # pycodestyle warnings
     "F",   # pyflakes
@@ -46,9 +48,6 @@ select = [
 ignore = [
     "E501", # line-too-long
 ]
-
-[tool.ruff.lint.isort]
-known-first-party = ["pingdat"]
 
 [build-system]
 requires = ["poetry-core"]
