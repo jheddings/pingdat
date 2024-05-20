@@ -21,13 +21,13 @@ GitPython = "^3.1.43"
 pytest = "^8.2.1"
 coverage = "^7.5.1"
 ruff = "^0.4.4"
+black = "^24.4.2"
 
 [tool.poetry.scripts]
 pingdat = "pingdat.__main__:main"
 
-[tool.ruff]
-line-length = 88
-indent-width = 4
+[tool.black]
+line_length = 88
 
 [tool.ruff.lint]
 select = [
@@ -47,13 +47,7 @@ ignore = [
     "E501", # line-too-long
 ]
 
-[tool.ruff.format]
-quote-style = "double"
-indent-style = "space"
-skip-magic-trailing-comma = false
-line-ending = "auto"
-
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 known-first-party = ["pingdat"]
 
 [build-system]
