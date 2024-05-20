@@ -4,10 +4,13 @@ import logging
 import threading
 from datetime import datetime, timedelta
 
-from ping3 import ping
+import ping3
+from ping3.errors import PingError, Timeout
 from prometheus_client import Counter, Gauge, Histogram
 
 logger = logging.getLogger(__name__)
+
+ping3.EXCEPTIONS = True
 
 METRICS_LABELS = ["name", "address"]
 
@@ -65,43 +68,66 @@ class PingMetrics:
 
 
 class PingTarget:
-    __thread_count__ = 0
-
     def __init__(
         self,
         name,
         address,
-        interval,
         ttl=64,
         count=3,
-        timeout=None,
+        timeout=3,
         payload_size=56,
     ):
-        PingTarget.__thread_count__ += 1
-
         self.name = name
         self.address = address
-        self.timeout = timeout or interval / 2
+        self.timeout = timeout
         self.payload_size = payload_size
         self.ttl = ttl
         self.count = count
 
-        self.interval = timedelta(seconds=interval)
-
-        self.thread_ctl = threading.Event()
-        self.loop_thread = threading.Thread(name=self.id, target=self.ping_loop)
-        self.loop_last_exec = None
-
         self.metrics = PingMetrics(name=name, address=address)
-
         self.logger = logger.getChild("PingTarget")
 
-    def __call__(self, seq=0):
+    def __call__(self):
+        """Ping the target and update metrics."""
+        self.logger.info("PING -- %s @ %s", self.name, self.address)
+
+        response_times = []
+
+        for seq in range(0, self.count):
+            self.metrics.requests.inc()
+
+            try:
+                resp = self.one_ping_only(seq)
+
+                self.metrics.responses.inc()
+                self.metrics.observations.observe(resp)
+                response_times.append(resp)
+
+            except Timeout:
+                self.metrics.timeouts.inc()
+                response_times.append(self.timeout)
+
+            except PingError as err:
+                self.logger.error("ping error: %s", err)
+                self.metrics.errors.inc()
+
+            except OSError as err:
+                self.logger.error("OS error: %s", err)
+                self.metrics.errors.inc()
+
+        if len(response_times) > 0:
+            avg = sum(response_times) / len(response_times)
+            self.metrics.response_time.set(avg)
+
+        else:
+            self.metrics.response_time.set(-1)
+
+    def one_ping_only(self, seq=0):
         """Ping the configured target with a given sequence number."""
 
         self.logger.debug("ping :: %s @ %s [seq:%d]", self.name, self.address, seq)
 
-        return ping(
+        return ping3.ping(
             self.address,
             timeout=self.timeout,
             ttl=self.ttl,
@@ -109,9 +135,26 @@ class PingTarget:
             seq=seq,
         )
 
+
+class PingLoop:
+
+    __thread_count__ = 0
+
+    def __init__(self, target: PingTarget, interval: int):
+        PingLoop.__thread_count__ += 1
+
+        self.target = target
+        self.interval = timedelta(seconds=interval)
+
+        self.thread_ctl = threading.Event()
+        self.loop_thread = threading.Thread(name=self.id, target=self.ping_loop)
+        self.loop_last_exec = None
+
+        self.logger = logger.getChild("PingLoop")
+
     @property
     def id(self) -> str:
-        return f"{self.address}-{PingTarget.__thread_count__}"
+        return f"{self.target.address}-{PingLoop.__thread_count__}"
 
     def start(self) -> None:
         """Start the main thread loop."""
@@ -124,10 +167,11 @@ class PingTarget:
     def stop(self) -> None:
         """Signal the thread to stop and wait for it to exit."""
 
-        self.logger.debug("Stopping ping thread")
+        timeout = self.interval.total_seconds() * 2
+        self.logger.debug("Stopping ping thread [%s sec]", timeout)
 
         self.thread_ctl.set()
-        self.loop_thread.join(self.timeout)
+        self.loop_thread.join(timeout)
 
         if self.loop_thread.is_alive():
             self.logger.warning("Thread failed to complete")
@@ -135,12 +179,12 @@ class PingTarget:
     def ping_loop(self):
         """Manage the lifecycle of the thread loop."""
 
-        self.logger.debug("BEGIN -- %s :: ping_loop @ %s", self.address, self.interval)
+        self.logger.debug("BEGIN :: ping_loop @ %s sec", self.interval)
 
         while not self.thread_ctl.is_set():
             self.loop_last_exec = datetime.now()
 
-            self.run_ping_test()
+            self.target()
 
             # figure out when to run the next step
             next_loop_time = self.loop_last_exec + self.interval
@@ -151,44 +195,10 @@ class PingTarget:
                 self.logger.warning("ping time exceeded loop interval; overflow")
                 next_loop_sleep = 0
 
-            self.logger.debug(
-                "%s :: ping loop complete; next_step: %f",
-                self.address,
-                next_loop_sleep,
-            )
+            self.logger.debug("ping complete; next_step: %f", next_loop_sleep)
 
             # break if we are signaled to stop
             if self.thread_ctl.wait(next_loop_sleep):
                 self.logger.debug("received exit signal; ping_loop exiting")
 
-        self.logger.debug("END -- %s :: ping_loop", self.address)
-
-    def run_ping_test(self):
-        """Ping the target and update metrics."""
-        self.logger.info("PING -- %s @ %s", self.name, self.address)
-
-        response_times = []
-
-        for seq in range(0, self.count):
-            self.metrics.requests.inc()
-
-            resp = self(seq)
-
-            if resp is None:
-                self.metrics.timeouts.inc()
-                response_times.append(self.timeout)
-
-            elif resp is False:
-                self.metrics.errors.inc()
-
-            else:
-                self.metrics.responses.inc()
-                self.metrics.observations.observe(resp)
-                response_times.append(resp)
-
-        if len(response_times) > 0:
-            avg = sum(response_times) / len(response_times)
-            self.metrics.response_time.set(avg)
-
-        else:
-            self.metrics.response_time.set(-1)
+        self.logger.debug("END :: ping_loop")

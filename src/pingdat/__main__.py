@@ -6,7 +6,7 @@ import signal
 import click
 from prometheus_client import start_http_server
 
-from . import PingTarget, version
+from . import PingLoop, PingTarget, version
 from .config import AppConfig, MetricsConfig
 
 logger = logging.getLogger(__name__)
@@ -24,7 +24,7 @@ class MainApp:
         self._initialize_metrics(config.metrics)
 
     def _initialize_targets(self, config: AppConfig):
-        self.targets = []
+        self.threads = []
 
         for target_config in config.targets:
             self.logger.info(
@@ -36,12 +36,16 @@ class MainApp:
             target = PingTarget(
                 name=target_config.name,
                 address=target_config.address,
-                interval=target_config.interval or config.interval,
                 timeout=target_config.timeout or config.timeout,
                 count=target_config.count or config.count,
             )
 
-            self.targets.append(target)
+            thread = PingLoop(
+                target=target,
+                interval=target_config.interval or config.interval,
+            )
+
+            self.threads.append(thread)
 
     def _initialize_metrics(self, config: MetricsConfig):
         self.logger.info(
@@ -55,16 +59,16 @@ class MainApp:
     def __call__(self):
         self.logger.debug("Starting main app")
 
-        for obs in self.targets:
-            obs.start()
+        for thread in self.threads:
+            thread.start()
 
         try:
             signal.pause()
         except KeyboardInterrupt:
             self.logger.debug("canceled by user")
 
-        for obs in self.targets:
-            obs.stop()
+        for thread in self.threads:
+            thread.stop()
 
 
 @click.command()
