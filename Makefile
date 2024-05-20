@@ -45,7 +45,7 @@ release: preflight
 
 .PHONY: run
 run: venv
-	$(WITH_VENV) python3 -m pingdat --config $(BASEDIR)/etc/pingdat.yaml
+	$(WITH_VENV) python3 -m pingdat --config $(BASEDIR)/local.yaml
 
 
 .PHONY: runc
