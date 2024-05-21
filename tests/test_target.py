@@ -6,6 +6,26 @@ from ping3.errors import PingError
 from pingdat import PingTarget
 
 
+def test_ping_google():
+    """Verify ping works to Google DNS."""
+
+    target = PingTarget(name="ping::google", address="8.8.8.8")
+
+    delay = target.one_ping_only()
+
+    assert delay > 0
+
+
+def test_ping_cloudflare():
+    """Verify ping works to CloudFlare."""
+
+    target = PingTarget(name="ping::cloudflare", address="1.1.1.1")
+
+    delay = target.one_ping_only()
+
+    assert delay > 0
+
+
 def test_bad_hostname():
     """Verify that invalid hosts are handled properly."""
 
