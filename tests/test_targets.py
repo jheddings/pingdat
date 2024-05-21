@@ -6,6 +6,7 @@ from ping3.errors import PingError
 from pingdat import PingTarget
 
 
+@pytest.mark.network
 def test_ping_google():
     """Verify ping works to Google DNS."""
 
@@ -16,6 +17,7 @@ def test_ping_google():
     assert delay > 0
 
 
+@pytest.mark.network
 def test_ping_cloudflare():
     """Verify ping works to CloudFlare."""
 

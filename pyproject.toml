@@ -49,6 +49,11 @@ ignore = [
     "E501", # line-too-long
 ]
 
+[tool.pytest.ini_options]
+markers = [
+    "network: tests that require an active network",
+]
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
