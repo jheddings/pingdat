@@ -99,6 +99,8 @@ class PingTarget:
             try:
                 resp = self.one_ping_only(seq)
 
+                self.logger.debug("ping :: %s [%d] => %d sec", self.name, seq, resp)
+
                 self.metrics.responses.inc()
                 self.metrics.observations.observe(resp)
                 response_times.append(resp)
@@ -125,15 +127,20 @@ class PingTarget:
     def one_ping_only(self, seq=0):
         """Ping the configured target with a given sequence number."""
 
-        self.logger.debug("ping :: %s @ %s [seq:%d]", self.name, self.address, seq)
+        self.logger.debug("ping :: %s @ %s [%d]", self.name, self.address, seq)
 
-        return ping3.ping(
+        delay = ping3.ping(
             self.address,
             timeout=self.timeout,
             ttl=self.ttl,
             size=self.payload_size,
             seq=seq,
         )
+
+        if delay is None:
+            raise PingError("ping failed")
+
+        return delay
 
 
 class PingLoop:
