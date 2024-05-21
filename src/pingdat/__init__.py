@@ -97,24 +97,27 @@ class PingTarget:
             self.metrics.requests.inc()
 
             try:
-                resp = self.one_ping_only(seq)
+                delay = self.one_ping_only(seq)
 
-                self.logger.debug("ping :: %s [%d] => %d sec", self.name, seq, resp)
+                self.logger.debug("ping :: %s [%d] => %d sec", self.name, seq, delay)
 
                 self.metrics.responses.inc()
-                self.metrics.observations.observe(resp)
-                response_times.append(resp)
+                self.metrics.observations.observe(delay)
+                response_times.append(delay)
 
             except Timeout:
+                self.logger.warning("ping timeout: %s", self.name)
                 self.metrics.timeouts.inc()
+
+                # add the timeout value to the response_times list
                 response_times.append(self.timeout)
 
             except PingError as err:
-                self.logger.error("ping error: %s", err)
+                self.logger.error("ping error: %s => %s", self.name, err)
                 self.metrics.errors.inc()
 
             except OSError as err:
-                self.logger.error("OS error: %s", err)
+                self.logger.error("network error: %s => %s", self.name, err)
                 self.metrics.errors.inc()
 
         if len(response_times) > 0:
