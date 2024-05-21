@@ -91,18 +91,15 @@ class PingTarget:
         """Ping the target and update metrics."""
         self.logger.info("PING -- %s @ %s", self.name, self.address)
 
+        # track the response times so we can average them later
         response_times = []
 
         for seq in range(0, self.count):
-            self.metrics.requests.inc()
-
             try:
                 delay = self.one_ping_only(seq)
 
                 self.logger.debug("ping :: %s [%d] => %d sec", self.name, seq, delay)
 
-                self.metrics.responses.inc()
-                self.metrics.observations.observe(delay)
                 response_times.append(delay)
 
             except Timeout:
@@ -120,10 +117,12 @@ class PingTarget:
                 self.logger.error("network error: %s => %s", self.name, err)
                 self.metrics.errors.inc()
 
+        # calculate the average response time
         if len(response_times) > 0:
             avg = sum(response_times) / len(response_times)
             self.metrics.response_time.set(avg)
 
+        # use a sentinel value to indicate no response
         else:
             self.metrics.response_time.set(-1)
 
@@ -131,6 +130,8 @@ class PingTarget:
         """Ping the configured target with a given sequence number."""
 
         self.logger.debug("ping :: %s @ %s [%d]", self.name, self.address, seq)
+
+        self.metrics.requests.inc()
 
         delay = ping3.ping(
             self.address,
@@ -142,6 +143,9 @@ class PingTarget:
 
         if delay is None:
             raise PingError("ping failed")
+
+        self.metrics.responses.inc()
+        self.metrics.observations.observe(delay)
 
         return delay
 
