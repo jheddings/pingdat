@@ -15,7 +15,7 @@ all: venv preflight build
 
 .PHONY: venv
 venv:
-	poetry install --sync --no-interaction
+	poetry install --sync --with dev --no-interaction
 	$(WITH_VENV) pre-commit install --install-hooks --overwrite
 
 

@@ -34,4 +34,6 @@ jobs:
         uses: snok/install-poetry@v1.3.4
 
       - name: Run unit tests
-        run: poetry run pytest -m "not network" tests/
+        run: |
+          poetry install --with dev --no-interaction
+          poetry run pytest -m "not network" tests/
