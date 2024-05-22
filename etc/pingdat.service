@@ -1,0 +1,10 @@
+[Unit]
+Description=Ping stats exporter for Prometheus metrics
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/usr/bin/python3 -m pingdat --config /etc/pingdat.yaml
+
+[Install]
+WantedBy=basic.target

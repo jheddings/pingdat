@@ -15,7 +15,7 @@ all: venv preflight build
 
 .PHONY: venv
 venv:
-	poetry install --sync --no-interaction
+	poetry install --sync --with dev --no-interaction
 	$(WITH_VENV) pre-commit install --install-hooks --overwrite
 
 
@@ -45,7 +45,7 @@ release: preflight
 
 .PHONY: run
 run: venv
-	$(WITH_VENV) python3 -m pingdat --config $(BASEDIR)/etc/pingdat.yaml
+	$(WITH_VENV) python3 -m pingdat --config $(BASEDIR)/local.yaml
 
 
 .PHONY: runc

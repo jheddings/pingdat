@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pingdat"
-version = "1.4.1"
+version = "1.5.0"
 description = "A simple ping exporter for Prometheus metrics."
 authors = ["jheddings <jheddings@gmail.com>"]
 license = "MIT"
@@ -29,9 +29,11 @@ pingdat = "pingdat.__main__:main"
 [tool.black]
 line_length = 88
 
+[tool.isort]
+profile = "black"
+
 [tool.ruff.lint]
 select = [
-    "I",   # isort
     "E",   # pycodestyle errors
     "W",   # pycodestyle warnings
     "F",   # pyflakes
@@ -47,8 +49,10 @@ ignore = [
     "E501", # line-too-long
 ]
 
-[tool.ruff.lint.isort]
-known-first-party = ["pingdat"]
+[tool.pytest.ini_options]
+markers = [
+    "network: tests that require an active network",
+]
 
 [build-system]
 requires = ["poetry-core"]

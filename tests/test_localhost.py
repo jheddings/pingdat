@@ -4,41 +4,50 @@ from time import sleep
 
 import pytest
 
-from pingdat import PingTarget
+from pingdat import PingLoop, PingTarget
 
 
 @pytest.fixture(scope="function")
 def localhost():
     """Create a PingTarget for localhost."""
 
-    target = PingTarget(name="ping::localhost", address="localhost", interval=1)
+    yield PingTarget(name="ping::localhost", address="localhost")
 
-    target.start()
 
-    yield target
+@pytest.fixture(scope="function")
+def loop(localhost: PingTarget):
+    """Create a PingLoop for localhost."""
 
-    target.stop()
+    loop = PingLoop(target=localhost, interval=1)
+
+    loop.start()
+
+    yield loop
+
+    loop.stop()
 
 
 def test_basic_ping(localhost: PingTarget):
     """Verify that a basic ping works."""
 
     # give me a ping, Vasili
-    delay = localhost()
+    delay = localhost.one_ping_only()
 
     assert delay is not None
     assert delay is not False
-    assert delay < 1
+    assert delay > 0
 
 
-def test_ping_thread(localhost: PingTarget):
+def test_ping_thread(loop: PingLoop):
     """Verify that the ping thread is running."""
+
+    localhost = loop.target
 
     # this is kind of a hack to get number of requests, but it works
     starting_count = localhost.metrics.requests._value.get()
 
-    # one ping only, please
-    sleep(0.25)
+    # allow a single ping
+    sleep(loop.interval.total_seconds())
 
     final_count = localhost.metrics.requests._value.get()
 
