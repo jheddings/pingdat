@@ -20,7 +20,7 @@ pre-commit = "^3.7.1"
 GitPython = "^3.1.43"
 pytest = "^8.3.2"
 coverage = "^7.6.0"
-ruff = "^0.5.4"
+ruff = "^0.5.5"
 black = "^24.4.2"
 
 [tool.poetry.scripts]
