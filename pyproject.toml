@@ -19,7 +19,7 @@ ping3 = "^4.0.8"
 pre-commit = "^3.8.0"
 GitPython = "^3.1.43"
 pytest = "^8.3.2"
-coverage = "^7.6.0"
+coverage = "^7.6.1"
 ruff = "^0.5.6"
 black = "^24.8.0"
 
