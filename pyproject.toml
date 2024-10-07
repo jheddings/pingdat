@@ -21,7 +21,7 @@ GitPython = "^3.1.43"
 pytest = "^8.3.3"
 coverage = "^7.6.1"
 ruff = "^0.6.9"
-black = "^24.8.0"
+black = "^24.10.0"
 
 [tool.poetry.scripts]
 pingdat = "pingdat.__main__:main"
