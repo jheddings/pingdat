@@ -15,12 +15,12 @@ all: venv preflight build
 
 .PHONY: venv
 venv:
-	poetry install --sync --with dev --no-interaction
+	poetry sync --with dev --no-interaction
 	$(WITH_VENV) pre-commit install --install-hooks --overwrite
 
 
 poetry.lock: venv
-	poetry lock --no-update --no-interaction
+	poetry lock --no-interaction
 
 
 .PHONY: build-dist
