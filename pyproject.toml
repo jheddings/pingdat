@@ -9,18 +9,18 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.9"
 requests = "^2.32.3"
-click = "^8.1.7"
+click = "^8.1.8"
 prometheus-client = "^0.21.1"
-pydantic = "^2.10.3"
+pydantic = "^2.10.4"
 pyyaml = "^6.0.2"
 ping3 = "^4.0.8"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^4.0.1"
-GitPython = "^3.1.43"
+GitPython = "^3.1.44"
 pytest = "^8.3.4"
-coverage = "^7.6.8"
-ruff = "^0.8.1"
+coverage = "^7.6.10"
+ruff = "^0.8.6"
 black = "^24.10.0"
 
 [tool.poetry.scripts]
