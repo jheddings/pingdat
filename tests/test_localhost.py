@@ -27,6 +27,7 @@ def loop(localhost: PingTarget):
     loop.stop()
 
 
+@pytest.mark.network
 def test_basic_ping(localhost: PingTarget):
     """Verify that a basic ping works."""
 
@@ -38,6 +39,7 @@ def test_basic_ping(localhost: PingTarget):
     assert delay > 0
 
 
+@pytest.mark.network
 def test_ping_thread(loop: PingLoop):
     """Verify that the ping thread is running."""
 
