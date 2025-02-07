@@ -28,6 +28,7 @@ def test_ping_cloudflare():
     assert delay > 0
 
 
+@pytest.mark.network
 def test_bad_hostname():
     """Verify that invalid hosts are handled properly."""
 
