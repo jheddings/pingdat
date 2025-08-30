@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pingdat"
-version = "1.6.0"
+version = "1.6.1"
 description = "A simple ping exporter for Prometheus metrics."
 authors = ["jheddings <jheddings@gmail.com>"]
 license = "MIT"
@@ -9,7 +9,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 requests = "^2.32.5"
-click = "^8.2.2"
+click = "^8.2.1"
 prometheus-client = "^0.22.1"
 pydantic = "^2.11.7"
 pyyaml = "^6.0.2"
@@ -21,19 +21,17 @@ GitPython = "^3.1.45"
 pytest = "^8.4.1"
 coverage = "^7.10.6"
 ruff = "^0.12.11"
-black = "^25.1.0"
 
 [tool.poetry.scripts]
 pingdat = "pingdat.__main__:main"
 
-[tool.black]
-line_length = 88
-
-[tool.isort]
-profile = "black"
+[tool.ruff]
+line-length = 88
+indent-width = 4
 
 [tool.ruff.lint]
 select = [
+    "I",   # isort
     "E",   # pycodestyle errors
     "W",   # pycodestyle warnings
     "F",   # pyflakes
@@ -48,6 +46,12 @@ select = [
 ignore = [
     "E501", # line-too-long
 ]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
 
 [tool.pytest.ini_options]
 markers = [
