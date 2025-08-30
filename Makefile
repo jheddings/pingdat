@@ -85,6 +85,7 @@ preflight: static-checks unit-tests coverage-report
 clean:
 	rm -f "$(BASEDIR)/.coverage"
 	rm -Rf "$(BASEDIR)/.pytest_cache"
+	rm -Rf "$(BASEDIR)/.ruff_cache"
 	find "$(BASEDIR)" -name "*.pyc" -print | xargs rm -f
 	find "$(BASEDIR)" -name '__pycache__' -print | xargs rm -Rf
 	docker image rm "$(APPNAME):dev" 2>/dev/null || true
