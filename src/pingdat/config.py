@@ -7,7 +7,7 @@ import logging
 import logging.config
 import os
 import os.path
-from typing import Dict, List, Optional
+from typing import Optional
 
 import yaml
 from pydantic import BaseModel
@@ -40,10 +40,10 @@ class AppConfig(BaseModel):
     count: int = 3
     timeout: Optional[int] = None
 
-    targets: List[TargetConfig] = []
+    targets: list[TargetConfig] = []
     metrics: MetricsConfig = MetricsConfig()
 
-    logging: Optional[Dict] = None
+    logging: Optional[dict] = None
 
     @classmethod
     def load(cls, config_file):

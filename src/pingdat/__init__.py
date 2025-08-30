@@ -151,7 +151,6 @@ class PingTarget:
 
 
 class PingLoop:
-
     __thread_count__ = 0
 
     def __init__(self, target: PingTarget, interval: int):
