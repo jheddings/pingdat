@@ -14,7 +14,17 @@ jobs:
     steps:
       - uses: actions/checkout@v5.0.0
 
-      - name: Upload package to PyPI
-        uses: JRubics/poetry-publish@v2.1
-        with:
-          pypi_token: ${{ secrets.PYPI_TOKEN }}
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Install build dependencies
+        run: uv sync --all-extras
+
+      - name: Build the project
+        run: uv build
+
+      - name: Publish to PyPI
+        run: uv publish

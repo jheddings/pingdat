@@ -1,6 +1,6 @@
 FROM python:3.13
 
-COPY src poetry.lock pyproject.toml README.md /tmp/pingdat/
+COPY src uv.lock pyproject.toml README.md /tmp/pingdat/
 RUN pip3 install /tmp/pingdat/ && rm -Rf /tmp/pingdat
 
 COPY etc/pingdat.yaml /etc/pingdat.yaml

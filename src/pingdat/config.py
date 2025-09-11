@@ -7,7 +7,6 @@ import logging
 import logging.config
 import os
 import os.path
-from typing import Optional
 
 import yaml
 from pydantic import BaseModel
@@ -21,9 +20,9 @@ class TargetConfig(BaseModel):
     name: str
     address: str
 
-    interval: Optional[int] = None
-    timeout: Optional[int] = None
-    count: Optional[int] = None
+    interval: int | None = None
+    timeout: int | None = None
+    count: int | None = None
 
 
 class MetricsConfig(BaseModel):
@@ -38,12 +37,12 @@ class AppConfig(BaseModel):
 
     interval: int = 60
     count: int = 3
-    timeout: Optional[int] = None
+    timeout: int | None = None
 
     targets: list[TargetConfig] = []
     metrics: MetricsConfig = MetricsConfig()
 
-    logging: Optional[dict] = None
+    logging: dict | None = None
 
     @classmethod
     def load(cls, config_file):

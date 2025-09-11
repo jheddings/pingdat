@@ -1,29 +1,35 @@
-[tool.poetry]
+[project]
 name = "pingdat"
 version = "1.6.2"
 description = "A simple ping exporter for Prometheus metrics."
-authors = ["jheddings <jheddings@gmail.com>"]
-license = "MIT"
+authors = [{ name = "jheddings", email = "jheddings@gmail.com" }]
+requires-python = ">=3.10,<4"
 readme = "README.md"
+license = "MIT"
+dependencies = [
+    "requests>=2.32.5,<3",
+    "click>=8.2.1,<9",
+    "prometheus-client>=0.22.1,<0.23",
+    "pydantic>=2.11.7,<3",
+    "pyyaml>=6.0.2,<7",
+    "ping3>=5.1.5,<6",
+]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-requests = "^2.32.5"
-click = "^8.2.1"
-prometheus-client = "^0.22.1"
-pydantic = "^2.11.7"
-pyyaml = "^6.0.2"
-ping3 = "^5.1.5"
-
-[tool.poetry.group.dev.dependencies]
-pre-commit = "^4.3.0"
-GitPython = "^3.1.45"
-pytest = "^8.4.2"
-coverage = "^7.10.6"
-ruff = "^0.13.0"
-
-[tool.poetry.scripts]
+[project.scripts]
 pingdat = "pingdat.__main__:main"
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.3.0,<5",
+    "GitPython>=3.1.45,<4",
+    "pytest>=8.4.2,<9",
+    "coverage>=7.10.6,<8",
+    "ruff>=0.12.12,<0.13",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.ruff]
 line-length = 88
@@ -57,7 +63,3 @@ line-ending = "auto"
 markers = [
     "network: tests that require an active network",
 ]
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
