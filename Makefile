@@ -15,7 +15,7 @@ all: venv preflight build
 
 .PHONY: venv
 venv:
-	uv sync
+	uv sync --all-extras
 	$(WITH_VENV) pre-commit install --install-hooks --overwrite
 
 
