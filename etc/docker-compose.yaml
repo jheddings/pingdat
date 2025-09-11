@@ -3,7 +3,7 @@ version: "3"
 
 services:
   pingdat:
-    image: jheddings/pingdat:1.6.2
+    image: jheddings/pingdat:1.6.3
     volumes:
       - /opt/pingdat:/opt/pingdat
     restart: unless-stopped
