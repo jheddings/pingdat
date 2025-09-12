@@ -13,16 +13,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5.0.0
-
       - name: Setup uv w/ default python
         uses: astral-sh/setup-uv@v6
-
       - name: Install build dependencies
         run: uv sync --all-extras
-
       - name: Build the project
         run: uv build
-
       - name: Publish to PyPI
         run: uv publish
         env:
