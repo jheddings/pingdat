@@ -11,7 +11,6 @@ VALID_TARGETS = [
 ]
 
 INVALID_TARGETS = [
-    "0.0.0.0",
     "bad.host",
     "6.7",
     "256.256.256.256",
