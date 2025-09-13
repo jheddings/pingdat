@@ -1,16 +1,16 @@
 FROM python:3.13
 
-COPY src uv.lock pyproject.toml README.md /tmp/pingdat/
-RUN pip3 install /tmp/pingdat/ && rm -Rf /tmp/pingdat
+COPY --from=ghcr.io/astral-sh/uv:0.8.17 /uv /uvx /usr/local/bin/
+ENV PATH="/app/.venv/bin:$PATH"
 
-COPY etc/pingdat.yaml /etc/pingdat.yaml
+WORKDIR /app
 
-USER root
-EXPOSE 9056
+COPY src uv.lock pyproject.toml README.md /app/
+RUN uv sync --locked --no-dev
 
 # commands must be presented as an array, otherwise it will be launched
 # using a shell, which causes problems handling signals for shutdown
-ENTRYPOINT ["python3", "-m", "pingdat"]
+ENTRYPOINT ["python", "-m", "pingdat"]
 
 # allow local callers to change the config file
 CMD ["--config=/etc/pingdat.yaml"]
