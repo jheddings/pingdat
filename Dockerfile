@@ -1,6 +1,6 @@
 FROM python:3.13
 
-COPY --from=ghcr.io/astral-sh/uv:0.8.19 /uv /uvx /usr/local/bin/
+COPY --from=ghcr.io/astral-sh/uv:0.8.22 /uv /uvx /usr/local/bin/
 ENV PATH="/app/.venv/bin:$PATH"
 
 WORKDIR /app
