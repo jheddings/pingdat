@@ -3,7 +3,7 @@ name = "pingdat"
 version = "1.6.3"
 description = "A simple ping exporter for Prometheus metrics."
 authors = [{ name = "jheddings", email = "jheddings@gmail.com" }]
-requires-python = ">=3.10,<4"
+requires-python = ">=3.14.0,<4"
 readme = "README.md"
 license = "MIT"
 dependencies = [

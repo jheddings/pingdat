@@ -1,4 +1,4 @@
-FROM python:3.13
+FROM python:3.14
 
 COPY --from=ghcr.io/astral-sh/uv:0.8.22 /uv /uvx /usr/local/bin/
 ENV PATH="/app/.venv/bin:$PATH"
