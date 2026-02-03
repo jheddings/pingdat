@@ -24,7 +24,7 @@ dev = [
     "GitPython>=3.1.46,<4",
     "pytest>=9.0.2,<10",
     "coverage>=7.13.3,<8",
-    "ruff>=0.14.14,<0.15",
+    "ruff>=0.15.0,<0.16",
 ]
 
 [build-system]
