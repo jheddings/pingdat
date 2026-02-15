@@ -37,7 +37,7 @@ class AppConfig(BaseModel):
 
     interval: int = 60
     count: int = 3
-    timeout: int | None = None
+    timeout: int = 3
 
     targets: list[TargetConfig] = []
     metrics: MetricsConfig = MetricsConfig()

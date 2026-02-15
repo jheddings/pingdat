@@ -1,5 +1,8 @@
 # Makefile for pingdat
 
+# use a local.env file if it exists
+-include local.env
+
 BASEDIR ?= $(PWD)
 SRCDIR ?= $(BASEDIR)/src
 
@@ -7,6 +10,9 @@ APPNAME ?= $(shell grep -m1 '^name' "$(BASEDIR)/pyproject.toml" | sed -e 's/name
 APPVER ?= $(shell grep -m1 '^version' "$(BASEDIR)/pyproject.toml" | sed -e 's/version.*"\(.*\)"/\1/')
 
 WITH_VENV := uv run
+
+# for using API keys from environment variables
+export
 
 
 .PHONY: all
@@ -21,6 +27,13 @@ venv:
 
 uv.lock: venv
 	uv lock
+
+
+.PHONY: tidy
+tidy: venv uv.lock
+	$(WITH_VENV) ruff format "$(SRCDIR)" "$(BASEDIR)/tests"
+	$(WITH_VENV) ruff check --fix "$(SRCDIR)" "$(BASEDIR)/tests"
+	$(WITH_VENV) pyright "$(SRCDIR)" "$(BASEDIR)/tests"
 
 
 .PHONY: build-dist
@@ -55,8 +68,8 @@ runc: build-image
 		"$(APPNAME):dev" --config=/opt/pingdat/local.yaml
 
 
-.PHONY: static-checks
-static-checks: venv
+.PHONY: precommit
+precommit: venv
 	$(WITH_VENV) pre-commit run --all-files --verbose
 
 
@@ -79,8 +92,12 @@ coverage-html: venv unit-tests
 coverage: coverage-report coverage-html
 
 
+.PHONY: test
+test: unit-tests
+
+
 .PHONY: preflight
-preflight: static-checks unit-tests coverage-report
+preflight: precommit unit-tests
 
 
 .PHONY: clean
@@ -99,5 +116,6 @@ clobber: clean
 	rm -Rf "$(BASEDIR)/htmlcov"
 	rm -Rf "$(BASEDIR)/dist"
 	rm -Rf "$(BASEDIR)/.venv"
+	find "$(BASEDIR)" -name "*.log" -print | xargs rm -f
 	docker image rm "$(APPNAME):latest" 2>/dev/null || true
 	docker image rm "$(APPNAME):$(APPVER)" 2>/dev/null || true
