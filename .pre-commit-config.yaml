@@ -12,8 +12,22 @@ repos:
     rev: "v0.12.11"
     hooks:
       - id: ruff-format
+        args: ["--check"]
       - id: ruff-check
-        args: ["--fix"]
+
+  - repo: https://github.com/RobertCraigie/pyright-python
+    rev: "v1.1.390"
+    hooks:
+      - id: pyright
+        additional_dependencies:
+          - click>=8.3.1
+          - gitpython>=3.1.45
+          - ping3>=5.1.5
+          - prometheus-client>=0.24.1
+          - pydantic>=2.12.5
+          - pytest>=8.0.0
+          - pyyaml>=6.0.3
+          - requests>=2.32.5
 
   - repo: https://github.com/adrienverge/yamllint.git
     rev: "v1.32.0"
