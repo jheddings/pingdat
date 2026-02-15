@@ -51,8 +51,8 @@ run: venv
 .PHONY: runc
 runc: build-image
 	docker container run --rm --tty --publish 9056:9056 \
-		--volume "$(BASEDIR):/opt/wxdat" \
-		"$(APPNAME):dev" --config=/opt/wxdat/local.yaml
+		--volume "$(BASEDIR):/opt/pingdat" \
+		"$(APPNAME):dev" --config=/opt/pingdat/local.yaml
 
 
 .PHONY: static-checks
