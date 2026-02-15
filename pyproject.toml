@@ -36,7 +36,7 @@ build-backend = "hatchling.build"
 packages = ["src/pingdat"]
 
 [tool.ruff]
-line-length = 88
+line-length = 100
 indent-width = 4
 
 [tool.ruff.lint]
@@ -64,7 +64,7 @@ skip-magic-trailing-comma = false
 line-ending = "auto"
 
 [tool.pyright]
-pythonVersion = "3.10"
+pythonVersion = "3.12"
 include = ["src"]
 typeCheckingMode = "basic"
 reportMissingImports = true
@@ -72,6 +72,15 @@ reportMissingTypeStubs = false
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--tb=short",
+]
 markers = [
     "network: tests that require an active network",
 ]
