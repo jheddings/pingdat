@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6.0.2
+      - uses: actions/checkout@v6.0.3
       - name: Setup uv w/ default python
         uses: astral-sh/setup-uv@v8.1.0
       - name: Install build dependencies
