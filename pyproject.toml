@@ -25,7 +25,7 @@ dev = [
     "pytest>=9.1.1,<10",
     "coverage>=7.15.0,<8",
     "pyright>=1.1.411",
-    "ruff>=0.15.20,<0.16",
+    "ruff>=0.15.21,<0.16",
 ]
 
 [build-system]
