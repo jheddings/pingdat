@@ -12,7 +12,7 @@ dependencies = [
     "prometheus-client>=0.26.0,<0.27",
     "pydantic>=2.13.5,<3",
     "pyyaml>=6.0.3,<7",
-    "ping3>=5.1.5,<6",
+    "ping3>=5.1.6,<6",
 ]
 
 [project.scripts]
