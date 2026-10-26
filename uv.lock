@@ -420,7 +420,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "coverage", specifier = ">=7.16.2,<8" },
+    { name = "coverage", specifier = ">=7.17.0,<8" },
     { name = "gitpython", specifier = ">=3.2.1,<4" },
     { name = "pre-commit", specifier = ">=4.7.0,<5" },
     { name = "pyright", specifier = ">=1.1.414" },
