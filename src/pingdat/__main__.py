@@ -2,6 +2,7 @@
 
 import logging
 import signal
+import sys
 
 import click
 from prometheus_client import start_http_server
@@ -84,7 +85,12 @@ class MainApp:
     prog_name=version.__pkgname__,
 )
 def main(config):
-    cfg = AppConfig.load(config)
+    try:
+        cfg = AppConfig.load(config)
+    except FileNotFoundError:
+        click.echo(f"error: config file not found: {config}", err=True)
+        sys.exit(2)
+
     app = MainApp(cfg)
 
     # TODO allow simple options to be set from command line
