@@ -68,6 +68,8 @@ class PingMetrics:
 
 
 class PingTarget:
+    """A host to ping, with the settings each ping is sent with."""
+
     def __init__(
         self,
         name,
