@@ -153,6 +153,8 @@ class PingTarget:
 
 
 class PingLoop:
+    """A background thread that pings one target at a fixed interval."""
+
     __thread_count__ = 0
 
     def __init__(self, target: PingTarget, interval: int):
