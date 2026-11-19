@@ -171,6 +171,7 @@ class PingLoop:
 
     @property
     def id(self) -> str:
+        """Return the name of this loop's thread, built from its target's address."""
         return f"{self.target.address}-{PingLoop.__thread_count__}"
 
     def start(self) -> None:
