@@ -31,4 +31,5 @@ def test_missing_config_exits_cleanly(tmp_path):
     assert result.exit_code == 2
     assert missing in result.stderr
     assert len(result.stderr.strip().splitlines()) == 1
-    assert result.exception is None or isinstance(result.exception, SystemExit)
+    assert isinstance(result.exception, SystemExit)
+    assert not isinstance(result.exception, FileNotFoundError)
