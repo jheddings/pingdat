@@ -68,6 +68,8 @@ class PingMetrics:
 
 
 class PingTarget:
+    """A host to ping, with the settings each ping is sent with."""
+
     def __init__(
         self,
         name,
@@ -151,6 +153,8 @@ class PingTarget:
 
 
 class PingLoop:
+    """A background thread that pings one target at a fixed interval."""
+
     __thread_count__ = 0
 
     def __init__(self, target: PingTarget, interval: int):
@@ -167,6 +171,7 @@ class PingLoop:
 
     @property
     def id(self) -> str:
+        """Return the name of this loop's thread, built from its target's address."""
         return f"{self.target.address}-{PingLoop.__thread_count__}"
 
     def start(self) -> None:

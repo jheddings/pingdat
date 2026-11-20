@@ -24,12 +24,12 @@ def test_sample_config():
 
 
 def test_missing_config_exits_cleanly(tmp_path):
-    missing = tmp_path / "does-not-exist.yaml"
+    missing = str(tmp_path / "does-not-exist.yaml")
 
-    result = CliRunner().invoke(main, ["--config", str(missing)])
+    result = CliRunner().invoke(main, ["--config", missing])
 
     assert result.exit_code == 2
-    assert str(missing) in result.stderr
+    assert missing in result.stderr
     assert len(result.stderr.strip().splitlines()) == 1
     assert isinstance(result.exception, SystemExit)
     assert not isinstance(result.exception, FileNotFoundError)

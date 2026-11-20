@@ -87,8 +87,8 @@ class MainApp:
 def main(config):
     try:
         cfg = AppConfig.load(config)
-    except FileNotFoundError as exc:
-        click.echo(f"Error: {exc}", err=True)
+    except FileNotFoundError:
+        click.echo(f"error: config file not found: {config}", err=True)
         sys.exit(2)
 
     app = MainApp(cfg)
