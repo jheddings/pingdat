@@ -17,26 +17,23 @@ uv = "0.13.9"
 # pyright runs on Node.
 node = "22"
 
-# A task tagged "check" is a check: the factory runs it on every change, and
-# only a failing check counts as a fault. Any other task but setup is a
-# command, offered to the hands that change the work.
+# A task tagged "check" is one the factory runs itself on every change and
+# holds the work to. This repository's CI already runs these on every pull
+# request, so none is tagged: each is a command, which a hand runs when it
+# chooses, and a Fitter may show a fault with any of them.
 
 [tasks.format]
 description = "ruff format, changing nothing"
 run = "uv run ruff format --check src tests"
-tags = ["check"]
 
 [tasks.lint]
 description = "ruff check"
 run = "uv run ruff check src tests"
-tags = ["check"]
 
 [tasks.types]
 description = "pyright"
 run = "uv run pyright src tests"
-tags = ["check"]
 
 [tasks.test]
 description = "The pytest suite"
 run = "uv run pytest tests"
-tags = ["check"]
